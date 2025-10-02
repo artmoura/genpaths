@@ -21,8 +21,8 @@ function showHelp() {
 🚀 Path Generator - Gerador automático de estruturas de arquivos
 
 ${chalk.yellow('Uso:')}
-  npx genpath [comando] [opções]
-  npx genpath <nome-da-feature> [opções]
+  npx genpaths [comando] [opções]
+  npx genpaths <nome-da-feature> [opções]
 
 ${chalk.yellow('Comandos:')}
   defaults                    Copia templates padrão para personalização
@@ -41,14 +41,14 @@ ${chalk.yellow('Tipos disponíveis:')}
   models, repositories, interfaces, hooks, enums
 
 ${chalk.yellow('Exemplos:')}
-  npx genpath User
-  npx genpath Product --only models,interfaces
-  npx genpath Order --except enums --js
-  npx genpath auth Login
-  npx genpath init
-  npx genpath defaults
+  npx genpaths User
+  npx genpaths Product --only models,interfaces
+  npx genpaths Order --except enums --js
+  npx genpaths auth Login
+  npx genpaths init
+  npx genpaths defaults
 
-${chalk.gray('Para mais informações: https://github.com/seu-usuario/genpath')}
+${chalk.gray('Para mais informações: https://github.com/seu-usuario/genpaths')}
 `));
 }
 
@@ -161,8 +161,8 @@ async function main() {
     // Validar se foi fornecido um nome de feature
     if (featureArgs.length === 0) {
       console.error(chalk.red("❌ Erro: Nome da feature é obrigatório"));
-      console.log("Use: npx genpath <nome-da-feature>");
-      console.log("Ou use: npx genpath --interactive");
+      console.log("Use: npx genpaths <nome-da-feature>");
+      console.log("Ou use: npx genpaths --interactive");
       process.exit(1);
     }
 

@@ -6,19 +6,19 @@ Um gerador automático de estruturas de arquivos e paths para projetos JavaScrip
 
 ### Via NPX (Recomendado)
 ```bash
-npx genpath
+npx genpaths
 ```
 
 ### Instalação Global
 ```bash
-npm install -g genpath
+npm install -g genpaths
 ```
 
 ## 🎯 Características
 
 - ✅ Suporte para **JavaScript** e **TypeScript**
 - ✅ Templates personalizáveis
-- ✅ Configuração flexível via arquivo `.genpath.json`
+- ✅ Configuração flexível via arquivo `.genpaths.json`
 - ✅ Geração seletiva de tipos de arquivo
 - ✅ Suporte a paths aninhados
 - ✅ Modo interativo intuitivo
@@ -48,48 +48,48 @@ features/
 ### Gerar apenas tipos específicos
 ```bash
 # Apenas models e interfaces
-npx genpath Product --only models,interfaces
+npx genpaths Product --only models,interfaces
 
 # Todos exceto enums
-npx genpath Order --except enums
+npx genpaths Order --except enums
 ```
 
 ### Especificar linguagem
 ```bash
 # Forçar JavaScript
-npx genpath Auth --js
+npx genpaths Auth --js
 
 # Forçar TypeScript
-npx genpath Auth --ts
+npx genpaths Auth --ts
 ```
 
 ### Paths aninhados
 ```bash
 # Cria em features/auth/Login/
-npx genpath auth Login
+npx genpaths auth Login
 ```
 
 ## 📋 Comandos Disponíveis
 
 ### Gerar Feature
 ```bash
-npx genpath <nome-da-feature> [opções]
-npx genpath <path> <nome-da-feature> [opções]
+npx genpaths <nome-da-feature> [opções]
+npx genpaths <path> <nome-da-feature> [opções]
 ```
 
 ### Comandos Especiais
 ```bash
 # Configurar projeto interativamente
-npx genpath init
+npx genpaths init
 
 # Copiar templates padrão para personalização
-npx genpath defaults
+npx genpaths defaults
 
 # Mostrar configuração atual
-npx genpath config
+npx genpaths config
 
 # Mostrar ajuda
-npx genpath --help
+npx genpaths --help
 ```
 
 ## ⚙️ Opções de CLI
@@ -105,9 +105,9 @@ npx genpath --help
 
 ## 🔧 Configuração
 
-### Arquivo `.genpath.json`
+### Arquivo `.genpaths.json`
 
-Crie um arquivo `.genpath.json` na raiz do seu projeto para personalizar as configurações:
+Crie um arquivo `.genpaths.json` na raiz do seu projeto para personalizar as configurações:
 
 ```json
 {
@@ -119,7 +119,7 @@ Crie um arquivo `.genpath.json` na raiz do seu projeto para personalizar as conf
 
 ### Configuração Interativa
 ```bash
-npx genpath init
+npx genpaths init
 ```
 
 Este comando guiará você através de um processo interativo para configurar:
@@ -141,7 +141,7 @@ Este comando guiará você através de um processo interativo para configurar:
 
 ### Copiar Templates Padrão
 ```bash
-npx genpath defaults
+npx genpaths defaults
 ```
 
 Isso copiará os templates padrão para `./templates/` permitindo personalização.
@@ -174,30 +174,30 @@ templates/
 ### E-commerce
 ```bash
 # Estrutura de produto
-npx genpath Product --only models,interfaces,repositories
+npx genpaths Product --only models,interfaces,repositories
 
 # Carrinho de compras
-npx genpath shopping Cart
+npx genpaths shopping Cart
 
 # Sistema de pagamento
-npx genpath payment PaymentMethod --except hooks
+npx genpaths payment PaymentMethod --except hooks
 ```
 
 ### Autenticação
 ```bash
 # Módulo de usuário completo
-npx genpath auth User
+npx genpaths auth User
 
 # Apenas interfaces de auth
-npx genpath auth Login --only interfaces
+npx genpaths auth Login --only interfaces
 ```
 
 ### API REST
 ```bash
 # Para cada endpoint
-npx genpath api users --only models,repositories
-npx genpath api posts --only models,repositories
-npx genpath api comments --only models,repositories
+npx genpaths api users --only models,repositories
+npx genpaths api posts --only models,repositories
+npx genpaths api comments --only models,repositories
 ```
 
 ## 🛠️ Desenvolvimento
@@ -213,14 +213,14 @@ npx genpath api comments --only models,repositories
 ```bash
 # Clonar repositório
 git clone <repository-url>
-cd genpath
+cd genpaths
 
 # Instalar dependências
 npm install
 
 # Testar localmente
 npm link
-genpath --help
+genpaths --help
 ```
 
 ## 🤝 Contribuindo
@@ -233,8 +233,8 @@ genpath --help
 
 ## � Suporte
 
-- 🐛 **Issues**: [GitHub Issues](https://github.com/seu-usuario/genpath/issues)
-- 💬 **Discussões**: [GitHub Discussions](https://github.com/seu-usuario/genpath/discussions)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/seu-usuario/genpaths/issues)
+- 💬 **Discussões**: [GitHub Discussions](https://github.com/seu-usuario/genpaths/discussions)
 - 📖 **Documentação**: Este README
 
 ## 🎉 Agradecimentos

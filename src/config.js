@@ -3,7 +3,7 @@ import path from "path";
 
 export class ProjectConfig {
   constructor() {
-    this.configPath = path.join(process.cwd(), ".genpath.json");
+    this.configPath = path.join(process.cwd(), ".genpaths.json");
     this.config = this.loadConfig();
   }
 
