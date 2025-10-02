@@ -19,6 +19,8 @@ npm install -g genpaths
 - ✅ Suporte para **JavaScript** e **TypeScript**
 - ✅ Templates personalizáveis
 - ✅ Configuração flexível via arquivo `.genpaths.json`
+- ✅ **Arquivos index.{ts/js} automáticos** em cada pasta de tipo
+- ✅ **Pasta base configurável** (src, lib, ou nenhuma)
 - ✅ Geração seletiva de tipos de arquivo
 - ✅ Suporte a paths aninhados
 - ✅ Modo interativo intuitivo
@@ -31,18 +33,24 @@ npm install -g genpaths
 
 Isso criará a seguinte estrutura:
 ```
-features/
-  User/
-    models/
-      User.model.ts
-    repositories/
-      User.repository.ts
-    interfaces/
-      User.interface.ts
-    hooks/
-      User.hook.ts
-    enums/
-      User.enum.ts
+src/
+  features/
+    User/
+      models/
+        User.model.ts
+        index.ts
+      repositories/
+        User.repository.ts
+        index.ts
+      interfaces/
+        User.interface.ts
+        index.ts
+      hooks/
+        User.hook.ts
+        index.ts
+      enums/
+        User.enum.ts
+        index.ts
 ```
 
 ### Gerar apenas tipos específicos
@@ -107,15 +115,67 @@ npx genpaths --help
 
 ### Arquivo `.genpaths.json`
 
-Crie um arquivo `.genpaths.json` na raiz do seu projeto para personalizar as configurações:
+Crie um arquivo `.genpaths.json` na raiz do seu projeto para personalizar as configurações.
+
+#### Configuração Padrão (TypeScript + src/)
+
+Este é o padrão criado pelo comando `genpaths init`:
 
 ```json
 {
   "language": "typescript",
-  "outputDir": "src/features",
-  "defaultTypes": ["models", "repositories", "interfaces", "hooks"]
+  "baseDir": "src",
+  "outputDir": "features",
+  "defaultTypes": [
+    "models",
+    "hooks",
+    "repositories",
+    "interfaces",
+    "enums"
+  ]
 }
 ```
+
+#### Exemplos de Configurações
+
+**JavaScript sem pasta base:**
+```json
+{
+  "language": "javascript",
+  "baseDir": "",
+  "outputDir": "features",
+  "defaultTypes": ["models", "repositories"]
+}
+```
+
+**TypeScript com pasta lib:**
+```json
+{
+  "language": "typescript",
+  "baseDir": "lib",
+  "outputDir": "modules",
+  "defaultTypes": ["models", "interfaces", "hooks"]
+}
+```
+
+**Projeto minimalista:**
+```json
+{
+  "language": "javascript",
+  "baseDir": "",
+  "outputDir": "components",
+  "defaultTypes": ["models"]
+}
+```
+
+#### Opções de Configuração
+
+| Opção | Descrição | Exemplo | Padrão |
+|-------|-----------|---------|--------|
+| `language` | Linguagem do projeto | `"typescript"` ou `"javascript"` | `"typescript"` |
+| `baseDir` | Pasta base do projeto | `"src"`, `"lib"`, `""` (vazio para nenhuma) | `"src"` |
+| `outputDir` | Pasta onde features serão criadas | `"features"`, `"modules"` | `"features"` |
+| `defaultTypes` | Tipos de arquivo a serem gerados | `["models", "hooks"]` | `["models", "hooks", "repositories", "interfaces", "enums"]` |
 
 ### Configuração Interativa
 ```bash
@@ -124,8 +184,48 @@ npx genpaths init
 
 Este comando guiará você através de um processo interativo para configurar:
 - Linguagem padrão (JS/TS)
+- Pasta base (src, lib, ou nenhuma)
 - Diretório de saída
 - Tipos de arquivo padrão
+
+### Usando o Arquivo de Exemplo
+
+Você pode copiar o arquivo de exemplo incluído no pacote:
+```bash
+# Se instalado globalmente
+cp $(npm root -g)/genpaths/.genpaths.json.example .genpaths.json
+
+# Ou criar manualmente com os valores padrão
+cat > .genpaths.json << 'EOF'
+{
+  "language": "typescript",
+  "baseDir": "src",
+  "outputDir": "features",
+  "defaultTypes": ["models", "hooks", "repositories", "interfaces", "enums"]
+}
+EOF
+```
+
+## 🎨 Arquivos Index Automáticos
+
+Cada pasta de tipo gera automaticamente um arquivo `index.{ts/js}` que exporta o arquivo da feature:
+
+```typescript
+// src/features/User/models/index.ts
+export * from './User.model';
+
+// src/features/User/hooks/index.ts
+export * from './User.hook';
+```
+
+Isso permite importações mais limpas:
+```typescript
+// Ao invés de:
+import { UserModel } from './features/User/models/User.model';
+
+// Você pode usar:
+import { UserModel } from './features/User/models';
+```
 
 ## 📁 Tipos de Arquivo Suportados
 
@@ -152,17 +252,28 @@ templates/
   models/
     {feature}.model.js
     {feature}.model.ts
+    index.js
+    index.ts
   repositories/
     {feature}.repository.js
     {feature}.repository.ts
+    index.js
+    index.ts
   interfaces/
     {feature}.interface.ts
+    {feature}.interface.js
+    index.js
+    index.ts
   hooks/
     {feature}.hook.js
     {feature}.hook.ts
+    index.js
+    index.ts
   enums/
     {feature}.enum.js
     {feature}.enum.ts
+    index.js
+    index.ts
 ```
 
 ### Variáveis Disponíveis nos Templates

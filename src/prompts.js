@@ -29,6 +29,18 @@ export async function promptForOutputDir(currentDir = "features") {
   return outputDir;
 }
 
+export async function promptForBaseDir(currentBaseDir = "src") {
+  const { baseDir } = await inquirer.prompt([
+    {
+      type: "input",
+      name: "baseDir",
+      message: chalk.cyan("📂 Qual pasta base? (deixe vazio para nenhuma, ex: 'src')"),
+      default: currentBaseDir
+    }
+  ]);
+  return baseDir.trim();
+}
+
 export async function promptForTypes(defaultTypes) {
   const { selectedTypes } = await inquirer.prompt([
     {

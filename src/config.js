@@ -18,6 +18,7 @@ export class ProjectConfig {
 
     return {
       language: "typescript",
+      baseDir: "src",
       outputDir: "features",
       defaultTypes: ["models", "hooks", "repositories", "interfaces", "enums"]
     };
@@ -29,6 +30,10 @@ export class ProjectConfig {
 
   get language() {
     return this.config.language;
+  }
+
+  get baseDir() {
+    return this.config.baseDir || "";
   }
 
   get outputDir() {

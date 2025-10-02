@@ -38,6 +38,29 @@ export function loadTemplate(dirKey, featureName, language = "typescript") {
   return content.replace(/\{\{feature\}\}/g, capitalizedFeature);
 }
 
+export function resolveIndexTemplatePath(dirKey, language = "typescript") {
+  const extension = language === "typescript" ? "ts" : "js";
+  
+  // caminho customizado no projeto do usuário
+  const userPath = path.join(process.cwd(), "generator", "templates", dirKey, `index.${extension}`);
+  if (fs.existsSync(userPath)) {
+    return userPath;
+  }
+
+  // fallback para default do pacote
+  return path.join(__dirname, "templates", dirKey, `index.${extension}`);
+}
+
+export function loadIndexTemplate(dirKey, featureName, language = "typescript") {
+  const templatePath = resolveIndexTemplatePath(dirKey, language);
+  let content = fs.readFileSync(templatePath, "utf-8");
+  
+  // Capitaliza a primeira letra para nomes de classes/interfaces
+  const capitalizedFeature = featureName.charAt(0).toUpperCase() + featureName.slice(1);
+  
+  return content.replace(/\{\{feature\}\}/g, capitalizedFeature);
+}
+
 export function copyDefaults(language = "typescript") {
   const extension = language === "typescript" ? "ts" : "js";
   const src = path.join(__dirname, "templates");
@@ -63,6 +86,7 @@ export function copyDefaults(language = "typescript") {
   
   console.log(`✨ Templates padrão (${language}) copiados para generator/templates`);
   console.log(`📝 Use o formato {feature}.tipo.${extension} para seus templates customizados`);
+  console.log(`📝 Arquivos index.${extension} também foram copiados para cada tipo`);
 }
 
 export function ensureDirExists(dirPath) {

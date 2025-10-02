@@ -6,6 +6,7 @@ import { ProjectConfig } from "../src/config.js";
 import {
   promptForLanguage,
   promptForOutputDir,
+  promptForBaseDir,
   promptForTypes,
   promptForFeatureName,
   promptForNestedPath,
@@ -60,10 +61,11 @@ async function runInteractiveMode(config) {
     console.log(chalk.yellow('⚙️  Configurando projeto...'));
 
     const language = await promptForLanguage();
+    const baseDir = await promptForBaseDir(config.baseDir);
     const outputDir = await promptForOutputDir(config.outputDir);
     const defaultTypes = await promptForTypes(config.defaultTypes);
 
-    config.updateConfig({ language, outputDir, defaultTypes });
+    config.updateConfig({ language, baseDir, outputDir, defaultTypes });
     console.log(chalk.green('✅ Configuração salva!\n'));
   }
 
@@ -141,6 +143,7 @@ async function main() {
     if (args[0] === "config") {
       console.log(chalk.blue('\n📋 Configuração atual:'));
       console.log(chalk.gray('Linguagem:'), chalk.green(config.language));
+      console.log(chalk.gray('Pasta base:'), chalk.green(config.baseDir || '(nenhuma)'));
       console.log(chalk.gray('Pasta de saída:'), chalk.green(config.outputDir));
       console.log(chalk.gray('Tipos padrão:'), chalk.green(config.defaultTypes.join(', ')));
       console.log(chalk.gray('Extensão:'), chalk.green(config.fileExtension));

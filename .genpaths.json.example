@@ -1,0 +1,12 @@
+{
+  "language": "typescript",
+  "baseDir": "src",
+  "outputDir": "features",
+  "defaultTypes": [
+    "models",
+    "hooks",
+    "repositories",
+    "interfaces",
+    "enums"
+  ]
+}

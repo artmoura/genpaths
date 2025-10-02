@@ -1,9 +1,12 @@
 import path from "path";
-import { ensureDirExists, ensureFile, loadTemplate } from "./utils.js";
+import { ensureDirExists, ensureFile, loadTemplate, loadIndexTemplate } from "./utils.js";
 
 export function createFeature(args, { only = [], except = [], config } = {}) {
   const featureName = args[args.length - 1];
-  const basePath = path.join(process.cwd(), config.outputDir, ...args);
+  
+  // Construir o caminho base considerando baseDir
+  const pathParts = config.baseDir ? [config.baseDir, config.outputDir, ...args] : [config.outputDir, ...args];
+  const basePath = path.join(process.cwd(), ...pathParts);
 
   const dirKeys = config.defaultTypes;
   let dirsToCreate = [...dirKeys];
@@ -45,6 +48,11 @@ export function createFeature(args, { only = [], except = [], config } = {}) {
     const content = loadTemplate(dirKey, featureName, config.language);
 
     ensureFile(filePath, content);
+
+    // Criar arquivo index.{ts/js} para cada tipo
+    const indexPath = path.join(fullPath, `index${config.fileExtension}`);
+    const indexContent = loadIndexTemplate(dirKey, featureName, config.language);
+    ensureFile(indexPath, indexContent);
   });
 
   console.log(`✅ Feature "${featureName}" criada em: ${basePath}`);
