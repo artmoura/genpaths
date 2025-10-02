@@ -6,19 +6,19 @@ Um gerador automático de estruturas de arquivos e paths para projetos JavaScrip
 
 ### Via NPX (Recomendado)
 ```bash
-npx path-generator
+npx genpath
 ```
 
 ### Instalação Global
 ```bash
-npm install -g path-generator
+npm install -g genpath
 ```
 
 ## 🎯 Características
 
 - ✅ Suporte para **JavaScript** e **TypeScript**
 - ✅ Templates personalizáveis
-- ✅ Configuração flexível via arquivo `.path-generator.json`
+- ✅ Configuração flexível via arquivo `.genpath.json`
 - ✅ Geração seletiva de tipos de arquivo
 - ✅ Suporte a paths aninhados
 - ✅ Modo interativo intuitivo
@@ -48,48 +48,48 @@ features/
 ### Gerar apenas tipos específicos
 ```bash
 # Apenas models e interfaces
-npx path-generator Product --only models,interfaces
+npx genpath Product --only models,interfaces
 
 # Todos exceto enums
-npx path-generator Order --except enums
+npx genpath Order --except enums
 ```
 
 ### Especificar linguagem
 ```bash
 # Forçar JavaScript
-npx path-generator Auth --js
+npx genpath Auth --js
 
 # Forçar TypeScript
-npx path-generator Auth --ts
+npx genpath Auth --ts
 ```
 
 ### Paths aninhados
 ```bash
 # Cria em features/auth/Login/
-npx path-generator auth Login
+npx genpath auth Login
 ```
 
 ## 📋 Comandos Disponíveis
 
 ### Gerar Feature
 ```bash
-npx path-generator <nome-da-feature> [opções]
-npx path-generator <path> <nome-da-feature> [opções]
+npx genpath <nome-da-feature> [opções]
+npx genpath <path> <nome-da-feature> [opções]
 ```
 
 ### Comandos Especiais
 ```bash
 # Configurar projeto interativamente
-npx path-generator init
+npx genpath init
 
 # Copiar templates padrão para personalização
-npx path-generator defaults
+npx genpath defaults
 
 # Mostrar configuração atual
-npx path-generator config
+npx genpath config
 
 # Mostrar ajuda
-npx path-generator --help
+npx genpath --help
 ```
 
 ## ⚙️ Opções de CLI
@@ -105,9 +105,9 @@ npx path-generator --help
 
 ## 🔧 Configuração
 
-### Arquivo `.path-generator.json`
+### Arquivo `.genpath.json`
 
-Crie um arquivo `.path-generator.json` na raiz do seu projeto para personalizar as configurações:
+Crie um arquivo `.genpath.json` na raiz do seu projeto para personalizar as configurações:
 
 ```json
 {
@@ -119,7 +119,7 @@ Crie um arquivo `.path-generator.json` na raiz do seu projeto para personalizar 
 
 ### Configuração Interativa
 ```bash
-npx path-generator init
+npx genpath init
 ```
 
 Este comando guiará você através de um processo interativo para configurar:
@@ -141,7 +141,7 @@ Este comando guiará você através de um processo interativo para configurar:
 
 ### Copiar Templates Padrão
 ```bash
-npx path-generator defaults
+npx genpath defaults
 ```
 
 Isso copiará os templates padrão para `./templates/` permitindo personalização.
@@ -174,30 +174,30 @@ templates/
 ### E-commerce
 ```bash
 # Estrutura de produto
-npx path-generator Product --only models,interfaces,repositories
+npx genpath Product --only models,interfaces,repositories
 
 # Carrinho de compras
-npx path-generator shopping Cart
+npx genpath shopping Cart
 
 # Sistema de pagamento
-npx path-generator payment PaymentMethod --except hooks
+npx genpath payment PaymentMethod --except hooks
 ```
 
 ### Autenticação
 ```bash
 # Módulo de usuário completo
-npx path-generator auth User
+npx genpath auth User
 
 # Apenas interfaces de auth
-npx path-generator auth Login --only interfaces
+npx genpath auth Login --only interfaces
 ```
 
 ### API REST
 ```bash
 # Para cada endpoint
-npx path-generator api users --only models,repositories
-npx path-generator api posts --only models,repositories
-npx path-generator api comments --only models,repositories
+npx genpath api users --only models,repositories
+npx genpath api posts --only models,repositories
+npx genpath api comments --only models,repositories
 ```
 
 ## 🛠️ Desenvolvimento
@@ -213,14 +213,14 @@ npx path-generator api comments --only models,repositories
 ```bash
 # Clonar repositório
 git clone <repository-url>
-cd path-generator
+cd genpath
 
 # Instalar dependências
 npm install
 
 # Testar localmente
 npm link
-path-generator --help
+genpath --help
 ```
 
 ## 🤝 Contribuindo
@@ -233,8 +233,8 @@ path-generator --help
 
 ## � Suporte
 
-- 🐛 **Issues**: [GitHub Issues](https://github.com/seu-usuario/path-generator/issues)
-- 💬 **Discussões**: [GitHub Discussions](https://github.com/seu-usuario/path-generator/discussions)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/seu-usuario/genpath/issues)
+- 💬 **Discussões**: [GitHub Discussions](https://github.com/seu-usuario/genpath/discussions)
 - 📖 **Documentação**: Este README
 
 ## 🎉 Agradecimentos

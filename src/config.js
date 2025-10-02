@@ -3,7 +3,7 @@ import path from "path";
 
 export class ProjectConfig {
   constructor() {
-    this.configPath = path.join(process.cwd(), ".path-generator.json");
+    this.configPath = path.join(process.cwd(), ".genpath.json");
     this.config = this.loadConfig();
   }
 
@@ -15,7 +15,7 @@ export class ProjectConfig {
         console.warn("⚠️  Arquivo de configuração inválido, usando padrões");
       }
     }
-    
+
     return {
       language: "typescript",
       outputDir: "features",

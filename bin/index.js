@@ -21,8 +21,8 @@ function showHelp() {
 🚀 Path Generator - Gerador automático de estruturas de arquivos
 
 ${chalk.yellow('Uso:')}
-  npx path-generator [comando] [opções]
-  npx path-generator <nome-da-feature> [opções]
+  npx genpath [comando] [opções]
+  npx genpath <nome-da-feature> [opções]
 
 ${chalk.yellow('Comandos:')}
   defaults                    Copia templates padrão para personalização
@@ -41,14 +41,14 @@ ${chalk.yellow('Tipos disponíveis:')}
   models, repositories, interfaces, hooks, enums
 
 ${chalk.yellow('Exemplos:')}
-  npx path-generator User
-  npx path-generator Product --only models,interfaces
-  npx path-generator Order --except enums --js
-  npx path-generator auth Login
-  npx path-generator init
-  npx path-generator defaults
+  npx genpath User
+  npx genpath Product --only models,interfaces
+  npx genpath Order --except enums --js
+  npx genpath auth Login
+  npx genpath init
+  npx genpath defaults
 
-${chalk.gray('Para mais informações: https://github.com/seu-usuario/path-generator')}
+${chalk.gray('Para mais informações: https://github.com/seu-usuario/genpath')}
 `));
 }
 
@@ -58,11 +58,11 @@ async function runInteractiveMode(config) {
   // Se não há configuração, configura o projeto
   if (!config.configPath || args.includes('init')) {
     console.log(chalk.yellow('⚙️  Configurando projeto...'));
-    
+
     const language = await promptForLanguage();
     const outputDir = await promptForOutputDir(config.outputDir);
     const defaultTypes = await promptForTypes(config.defaultTypes);
-    
+
     config.updateConfig({ language, outputDir, defaultTypes });
     console.log(chalk.green('✅ Configuração salva!\n'));
   }
@@ -74,7 +74,7 @@ async function runInteractiveMode(config) {
 
   // Constrói argumentos
   const featureArgs = nestedPath ? [nestedPath, featureName] : [featureName];
-  
+
   return {
     featureArgs,
     options: { only: selectedTypes, config }
@@ -133,7 +133,7 @@ async function main() {
       let language = config.language;
       if (args.includes('--js')) language = 'javascript';
       if (args.includes('--ts')) language = 'typescript';
-      
+
       copyDefaults(language);
       return;
     }
@@ -161,8 +161,8 @@ async function main() {
     // Validar se foi fornecido um nome de feature
     if (featureArgs.length === 0) {
       console.error(chalk.red("❌ Erro: Nome da feature é obrigatório"));
-      console.log("Use: npx path-generator <nome-da-feature>");
-      console.log("Ou use: npx path-generator --interactive");
+      console.log("Use: npx genpath <nome-da-feature>");
+      console.log("Ou use: npx genpath --interactive");
       process.exit(1);
     }
 
