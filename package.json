@@ -1,0 +1,31 @@
+{
+  "name": "path-generator",
+  "version": "1.0.0",
+  "description": "Gerador automático de paths e estruturas de arquivos para projetos",
+  "main": "bin/index.js",
+  "bin": {
+    "path-generator": "./bin/index.js"
+  },
+  "type": "module",
+  "keywords": [
+    "generator",
+    "scaffold",
+    "templates",
+    "paths",
+    "npx"
+  ],
+  "author": "Arthur",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md"
+  ],
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "inquirer": "^12.9.6"
+  }
+}
