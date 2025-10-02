@@ -1,10 +1,10 @@
 {
-  "name": "path-generator",
+  "name": "genpaths",
   "version": "1.0.0",
   "description": "Gerador automático de paths e estruturas de arquivos para projetos",
   "main": "bin/index.js",
   "bin": {
-    "path-generator": "./bin/index.js"
+    "genpaths": "./bin/index.js"
   },
   "type": "module",
   "keywords": [
