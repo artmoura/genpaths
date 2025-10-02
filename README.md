@@ -1,251 +1,246 @@
-# Path Generator
+# 🚀 Path Generator
 
-Gerador automático de paths e estruturas de arquivos para projetos TypeScript e JavaScript.
+Um gerador automático de estruturas de arquivos e paths para projetos JavaScript/TypeScript. Crie rapidamente features completas com models, repositories, interfaces, hooks e enums organizados de forma padronizada.
 
-## 🚀 Instalação
+## � Instalação
 
+### Via NPX (Recomendado)
 ```bash
-# Via npx (recomendado)
-npx path-generator User
+npx path-generator
+```
 
-# Ou instalar globalmente
+### Instalação Global
+```bash
 npm install -g path-generator
 ```
 
-## 🤖 Modo Interativo (Recomendado)
+## 🎯 Características
 
-Para iniciantes ou configuração de projeto:
+- ✅ Suporte para **JavaScript** e **TypeScript**
+- ✅ Templates personalizáveis
+- ✅ Configuração flexível via arquivo `.path-generator.json`
+- ✅ Geração seletiva de tipos de arquivo
+- ✅ Suporte a paths aninhados
+- ✅ Modo interativo intuitivo
+- ✅ CLI amigável com cores e emojis
 
-```bash
-# Primeira execução ou configuração
-npx path-generator --interactive
-# ou
-npx path-generator init
-
-# Força modo interativo
-npx path-generator -i
-```
-
-O modo interativo oferece:
-- ✅ Configuração guiada do projeto
-- ✅ Seleção visual de tipos de arquivo
-- ✅ Validação de entrada em tempo real
-- ✅ Persistência de configurações
-- ✅ Interface amigável para iniciantes
-
-## ⚡ Uso Rápido
+## 🚀 Uso Rápido
 
 ### Gerar uma feature completa
-
-```bash
-npx path-generator User
 ```
 
-### Escolher linguagem
-
-```bash
-# JavaScript
-npx path-generator User --js
-
-# TypeScript (padrão)
-npx path-generator User --ts
-```
-
-### Gerar apenas alguns tipos
-
-```bash
-# Apenas models e repositories
-npx path-generator User --only models,repositories
-
-# Tudo exceto enums
-npx path-generator User --except enums
-```
-
-### Features aninhadas
-
-```bash
-npx path-generator auth User
-# Cria em features/auth/User/...
-```
-
-## 📁 Estruturas Geradas
-
-### TypeScript
+Isso criará a seguinte estrutura:
 ```
 features/
-├── User/
-│   ├── models/User.model.ts
-│   ├── repositories/User.repository.ts
-│   ├── interfaces/User.interface.ts
-│   ├── hooks/User.hook.ts
-│   └── enums/User.enum.ts
+  User/
+    models/
+      User.model.ts
+    repositories/
+      User.repository.ts
+    interfaces/
+      User.interface.ts
+    hooks/
+      User.hook.ts
+    enums/
+      User.enum.ts
 ```
 
-### JavaScript
-```
-features/
-├── User/
-│   ├── models/User.model.js
-│   ├── repositories/User.repository.js
-│   ├── interfaces/User.interface.js (JSDoc)
-│   ├── hooks/User.hook.js
-│   └── enums/User.enum.js
-```
-
-## ⚙️ Configuração
-
-### Ver configuração atual
+### Gerar apenas tipos específicos
 ```bash
-npx path-generator config
+# Apenas models e interfaces
+npx path-generator Product --only models,interfaces
+
+# Todos exceto enums
+npx path-generator Order --except enums
 ```
 
-### Arquivo de configuração
-O arquivo `.path-generator.json` é criado automaticamente na raiz do projeto:
-
-```json
-{
-  "language": "typescript",
-  "outputDir": "features", 
-  "defaultTypes": ["models", "hooks", "repositories", "interfaces", "enums"]
-}
-```
-
-### Configuração manual
-Você pode editar o arquivo `.path-generator.json` para:
-- Alterar linguagem padrão
-- Mudar diretório de saída
-- Definir tipos padrão a serem gerados
-
-## 🎨 Customizar Templates
-
+### Especificar linguagem
 ```bash
-# Copiar templates para personalização
-npx path-generator defaults
+# Forçar JavaScript
+npx path-generator Auth --js
 
-# Para JavaScript
-npx path-generator defaults --js
-
-# Para TypeScript  
-npx path-generator defaults --ts
+# Forçar TypeScript
+npx path-generator Auth --ts
 ```
 
-Isso criará a pasta `generator/templates/` no seu projeto, onde você pode customizar os templates.
-
-### Exemplo de template customizado
-
-```typescript
-// generator/templates/models/{feature}.model.ts
-export class {{feature}}Model {
-  id: string;
-  name: string;
-  createdAt: Date;
-
-  constructor(data: Partial<{{feature}}Model>) {
-    Object.assign(this, data);
-  }
-
-  // Métodos customizados...
-}
-```
-
-Quando você executar `npx path-generator User`, o `{{feature}}` será substituído por `User`, gerando o arquivo `User.model.ts`.
-
-## 📝 Formato de Arquivos
-
-O gerador segue o padrão **`{feature}.{tipo}.{extensão}`**:
-
-- ✅ `User.model.ts` - Model TypeScript
-- ✅ `User.model.js` - Model JavaScript  
-- ✅ `User.hook.ts` - Hook TypeScript
-- ✅ `Product.repository.js` - Repository JavaScript
-- ✅ `Order.interface.ts` - Interface TypeScript
-
-### Templates Customizados
-
-Os templates usam o formato `{feature}.{tipo}.{extensão}` e devem estar em:
-```
-generator/templates/
-├── models/{feature}.model.ts
-├── hooks/{feature}.hook.ts
-├── repositories/{feature}.repository.ts
-├── interfaces/{feature}.interface.ts
-└── enums/{feature}.enum.ts
+### Paths aninhados
+```bash
+# Cria em features/auth/Login/
+npx path-generator auth Login
 ```
 
 ## 📋 Comandos Disponíveis
 
-| Comando | Descrição |
-|---------|-----------|
-| `npx path-generator <nome>` | Gera feature com configurações padrão |
-| `npx path-generator --interactive` | Modo interativo |
-| `npx path-generator init` | Configuração inicial interativa |
-| `npx path-generator config` | Mostra configuração atual |
-| `npx path-generator defaults` | Copia templates para customização |
-
-## 🔧 Opções
-
-| Opção | Descrição |
-|-------|-----------|
-| `--only <tipos>` | Gera apenas os tipos especificados |
-| `--except <tipos>` | Gera todos exceto os especificados |
-| `--js` | Força geração JavaScript |
-| `--ts` | Força geração TypeScript |
-| `--interactive, -i` | Força modo interativo |
-| `--help, -h` | Mostra ajuda |
-
-## 🎯 Tipos de Arquivo Suportados
-
-- **models**: Classes de modelo de dados
-- **repositories**: Classes de repositório para acesso a dados  
-- **interfaces**: Interfaces TypeScript / JSDoc
-- **hooks**: Custom hooks (React/Vue)
-- **enums**: Enumerações TypeScript / Objects JavaScript
-
-## 💡 Exemplos Práticos
-
+### Gerar Feature
 ```bash
-# Configuração inicial
+npx path-generator <nome-da-feature> [opções]
+npx path-generator <path> <nome-da-feature> [opções]
+```
+
+### Comandos Especiais
+```bash
+# Configurar projeto interativamente
 npx path-generator init
 
-# Feature simples
-npx path-generator User
+# Copiar templates padrão para personalização
+npx path-generator defaults
 
-# Feature com tipos específicos
-npx path-generator Product --only models,interfaces
+# Mostrar configuração atual
+npx path-generator config
 
-# Feature JavaScript
-npx path-generator Component --js
-
-# Feature aninhada
-npx path-generator auth Login
-
-# Usando configuração personalizada
-npx path-generator Button  # usa .path-generator.json
-
-# Copiando templates para customização
-npx path-generator defaults --js
+# Mostrar ajuda
+npx path-generator --help
 ```
 
-## 🔄 Migração TypeScript ↔ JavaScript
+## ⚙️ Opções de CLI
 
-O gerador detecta automaticamente sua preferência e persiste a configuração. Você pode alternar facilmente:
+| Opção | Descrição | Exemplo |
+|-------|-----------|---------|
+| `--only <tipos>` | Gera apenas os tipos especificados | `--only models,interfaces` |
+| `--except <tipos>` | Gera todos exceto os especificados | `--except enums` |
+| `--js` | Força geração em JavaScript | `--js` |
+| `--ts` | Força geração em TypeScript | `--ts` |
+| `--interactive, -i` | Força modo interativo | `-i` |
+| `--help, -h` | Mostra ajuda | `--help` |
 
+## 🔧 Configuração
+
+### Arquivo `.path-generator.json`
+
+Crie um arquivo `.path-generator.json` na raiz do seu projeto para personalizar as configurações:
+
+```json
+{
+  "language": "typescript",
+  "outputDir": "src/features",
+  "defaultTypes": ["models", "repositories", "interfaces", "hooks"]
+}
+```
+
+### Configuração Interativa
 ```bash
-# Mudar para JavaScript
-npx path-generator User --js
-
-# Voltar para TypeScript  
-npx path-generator User --ts
-
-# Atualizar templates
-npx path-generator defaults --js
+npx path-generator init
 ```
 
-## 🚨 Problema Resolvido
+Este comando guiará você através de um processo interativo para configurar:
+- Linguagem padrão (JS/TS)
+- Diretório de saída
+- Tipos de arquivo padrão
 
-✅ **Antes**: Templates com `DefaultModel` hardcoded  
-✅ **Depois**: Sistema de placeholders `{{feature}}` → `UserModel`  
-✅ **Antes**: Apenas TypeScript  
-✅ **Depois**: TypeScript + JavaScript  
-✅ **Antes**: Configuração manual  
-✅ **Depois**: Modo interativo + persistência  
+## 📁 Tipos de Arquivo Suportados
+
+| Tipo | Descrição | Arquivo Gerado |
+|------|-----------|----------------|
+| `models` | Classes de modelo/entidade | `Feature.model.js/ts` |
+| `repositories` | Camada de acesso a dados | `Feature.repository.js/ts` |
+| `interfaces` | Interfaces TypeScript | `Feature.interface.ts` |
+| `hooks` | Custom hooks (React/Vue) | `Feature.hook.js/ts` |
+| `enums` | Enumerações | `Feature.enum.js/ts` |
+
+## 🎨 Templates Personalizados
+
+### Copiar Templates Padrão
+```bash
+npx path-generator defaults
+```
+
+Isso copiará os templates padrão para `./templates/` permitindo personalização.
+
+### Estrutura de Templates
+```
+templates/
+  models/
+    {feature}.model.js
+    {feature}.model.ts
+  repositories/
+    {feature}.repository.js
+    {feature}.repository.ts
+  interfaces/
+    {feature}.interface.ts
+  hooks/
+    {feature}.hook.js
+    {feature}.hook.ts
+  enums/
+    {feature}.enum.js
+    {feature}.enum.ts
+```
+
+### Variáveis Disponíveis nos Templates
+- `{{feature}}` - Nome da feature (capitalizado)
+- `{{featureLower}}` - Nome da feature (minúsculo)
+
+## 📝 Exemplos Práticos
+
+### E-commerce
+```bash
+# Estrutura de produto
+npx path-generator Product --only models,interfaces,repositories
+
+# Carrinho de compras
+npx path-generator shopping Cart
+
+# Sistema de pagamento
+npx path-generator payment PaymentMethod --except hooks
+```
+
+### Autenticação
+```bash
+# Módulo de usuário completo
+npx path-generator auth User
+
+# Apenas interfaces de auth
+npx path-generator auth Login --only interfaces
+```
+
+### API REST
+```bash
+# Para cada endpoint
+npx path-generator api users --only models,repositories
+npx path-generator api posts --only models,repositories
+npx path-generator api comments --only models,repositories
+```
+
+## 🛠️ Desenvolvimento
+
+### Requisitos
+- Node.js >= 14.0.0
+
+### Dependências
+- `chalk` - Cores no terminal
+- `inquirer` - Prompts interativos
+
+### Scripts de Desenvolvimento
+```bash
+# Clonar repositório
+git clone <repository-url>
+cd path-generator
+
+# Instalar dependências
+npm install
+
+# Testar localmente
+npm link
+path-generator --help
+```
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/nova-feature`)
+5. Crie um Pull Request
+
+## � Suporte
+
+- 🐛 **Issues**: [GitHub Issues](https://github.com/seu-usuario/path-generator/issues)
+- 💬 **Discussões**: [GitHub Discussions](https://github.com/seu-usuario/path-generator/discussions)
+- 📖 **Documentação**: Este README
+
+## 🎉 Agradecimentos
+
+Obrigado a todos os contribuidores que ajudaram a tornar este projeto possível!
+
+---
+
+⭐ **Se este projeto te ajudou, considere dar uma estrela no GitHub!**
