@@ -5,11 +5,13 @@ Um gerador automático de estruturas de arquivos e paths para projetos JavaScrip
 ## � Instalação
 
 ### Via NPX (Recomendado)
+
 ```bash
 npx genpaths
 ```
 
 ### Instalação Global
+
 ```bash
 npm install -g genpaths
 ```
@@ -27,23 +29,26 @@ npm install -g genpaths
 ## 🚀 Uso Rápido
 
 ### Gerar uma feature completa
+
 ```
 
 Isso criará a seguinte estrutura:
 ```
+
 features/
-  User/
-    models/
-      User.model.ts
-    repositories/
-      User.repository.ts
-    interfaces/
-      User.interface.ts
-    hooks/
-      User.hook.ts
-    enums/
-      User.enum.ts
-```
+User/
+models/
+User.model.ts
+repositories/
+User.repository.ts
+interfaces/
+User.interface.ts
+hooks/
+User.hook.ts
+enums/
+User.enum.ts
+
+````
 
 ### Gerar apenas tipos específicos
 ```bash
@@ -52,9 +57,10 @@ npx genpaths Product --only models,interfaces
 
 # Todos exceto enums
 npx genpaths Order --except enums
-```
+````
 
 ### Especificar linguagem
+
 ```bash
 # Forçar JavaScript
 npx genpaths Auth --js
@@ -64,6 +70,7 @@ npx genpaths Auth --ts
 ```
 
 ### Paths aninhados
+
 ```bash
 # Cria em features/auth/Login/
 npx genpaths auth Login
@@ -72,12 +79,14 @@ npx genpaths auth Login
 ## 📋 Comandos Disponíveis
 
 ### Gerar Feature
+
 ```bash
 npx genpaths <nome-da-feature> [opções]
 npx genpaths <path> <nome-da-feature> [opções]
 ```
 
 ### Comandos Especiais
+
 ```bash
 # Configurar projeto interativamente
 npx genpaths init
@@ -94,14 +103,14 @@ npx genpaths --help
 
 ## ⚙️ Opções de CLI
 
-| Opção | Descrição | Exemplo |
-|-------|-----------|---------|
-| `--only <tipos>` | Gera apenas os tipos especificados | `--only models,interfaces` |
-| `--except <tipos>` | Gera todos exceto os especificados | `--except enums` |
-| `--js` | Força geração em JavaScript | `--js` |
-| `--ts` | Força geração em TypeScript | `--ts` |
-| `--interactive, -i` | Força modo interativo | `-i` |
-| `--help, -h` | Mostra ajuda | `--help` |
+| Opção               | Descrição                          | Exemplo                    |
+| ------------------- | ---------------------------------- | -------------------------- |
+| `--only <tipos>`    | Gera apenas os tipos especificados | `--only models,interfaces` |
+| `--except <tipos>`  | Gera todos exceto os especificados | `--except enums`           |
+| `--js`              | Força geração em JavaScript        | `--js`                     |
+| `--ts`              | Força geração em TypeScript        | `--ts`                     |
+| `--interactive, -i` | Força modo interativo              | `-i`                       |
+| `--help, -h`        | Mostra ajuda                       | `--help`                   |
 
 ## 🔧 Configuração
 
@@ -118,28 +127,31 @@ Crie um arquivo `.genpaths.json` na raiz do seu projeto para personalizar as con
 ```
 
 ### Configuração Interativa
+
 ```bash
 npx genpaths init
 ```
 
 Este comando guiará você através de um processo interativo para configurar:
+
 - Linguagem padrão (JS/TS)
 - Diretório de saída
 - Tipos de arquivo padrão
 
 ## 📁 Tipos de Arquivo Suportados
 
-| Tipo | Descrição | Arquivo Gerado |
-|------|-----------|----------------|
-| `models` | Classes de modelo/entidade | `Feature.model.js/ts` |
-| `repositories` | Camada de acesso a dados | `Feature.repository.js/ts` |
-| `interfaces` | Interfaces TypeScript | `Feature.interface.ts` |
-| `hooks` | Custom hooks (React/Vue) | `Feature.hook.js/ts` |
-| `enums` | Enumerações | `Feature.enum.js/ts` |
+| Tipo           | Descrição                  | Arquivo Gerado             |
+| -------------- | -------------------------- | -------------------------- |
+| `models`       | Classes de modelo/entidade | `Feature.model.js/ts`      |
+| `repositories` | Camada de acesso a dados   | `Feature.repository.js/ts` |
+| `interfaces`   | Interfaces TypeScript      | `Feature.interface.ts`     |
+| `hooks`        | Custom hooks (React/Vue)   | `Feature.hook.js/ts`       |
+| `enums`        | Enumerações                | `Feature.enum.js/ts`       |
 
 ## 🎨 Templates Personalizados
 
 ### Copiar Templates Padrão
+
 ```bash
 npx genpaths defaults
 ```
@@ -147,6 +159,7 @@ npx genpaths defaults
 Isso copiará os templates padrão para `./templates/` permitindo personalização.
 
 ### Estrutura de Templates
+
 ```
 templates/
   models/
@@ -166,12 +179,14 @@ templates/
 ```
 
 ### Variáveis Disponíveis nos Templates
+
 - `{{feature}}` - Nome da feature (capitalizado)
 - `{{featureLower}}` - Nome da feature (minúsculo)
 
 ## 📝 Exemplos Práticos
 
 ### E-commerce
+
 ```bash
 # Estrutura de produto
 npx genpaths Product --only models,interfaces,repositories
@@ -184,6 +199,7 @@ npx genpaths payment PaymentMethod --except hooks
 ```
 
 ### Autenticação
+
 ```bash
 # Módulo de usuário completo
 npx genpaths auth User
@@ -193,6 +209,7 @@ npx genpaths auth Login --only interfaces
 ```
 
 ### API REST
+
 ```bash
 # Para cada endpoint
 npx genpaths api users --only models,repositories
@@ -203,13 +220,16 @@ npx genpaths api comments --only models,repositories
 ## 🛠️ Desenvolvimento
 
 ### Requisitos
+
 - Node.js >= 14.0.0
 
 ### Dependências
+
 - `chalk` - Cores no terminal
 - `inquirer` - Prompts interativos
 
 ### Scripts de Desenvolvimento
+
 ```bash
 # Clonar repositório
 git clone <repository-url>
@@ -225,7 +245,7 @@ genpaths --help
 
 ## 🤝 Contribuindo
 
-1. Fork o projeto
+1. Fork o projeto [GitHub](https://github.com/artmoura/genpaths)
 2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
 3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
 4. Push para a branch (`git push origin feature/nova-feature`)
@@ -233,8 +253,8 @@ genpaths --help
 
 ## � Suporte
 
-- 🐛 **Issues**: [GitHub Issues](https://github.com/seu-usuario/genpaths/issues)
-- 💬 **Discussões**: [GitHub Discussions](https://github.com/seu-usuario/genpaths/discussions)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/artmoura/genpaths/issues)
+- 💬 **Discussões**: [GitHub Discussions](https://github.com/artmoura/genpaths/discussions)
 - 📖 **Documentação**: Este README
 
 ## 🎉 Agradecimentos
