@@ -1,7 +1,7 @@
 {
   "name": "genpaths",
-  "version": "1.3.0",
-  "description": "Gerador automático de paths e estruturas de arquivos para projetos",
+  "version": "1.4.0",
+  "description": "Gerador automático de paths e estruturas de arquivos para projetos com suporte a tipos customizados",
   "main": "bin/index.js",
   "bin": {
     "genpaths": "./bin/index.js"
@@ -12,7 +12,9 @@
     "scaffold",
     "templates",
     "paths",
-    "npx"
+    "npx",
+    "custom-types",
+    "code-generator"
   ],
   "author": "Arthur",
   "license": "MIT",
@@ -23,6 +25,7 @@
     "bin/",
     "src/",
     "README.md",
+    "CUSTOM_TYPES.md",
     ".genpaths.json.example",
     "EXAMPLES.md"
   ],

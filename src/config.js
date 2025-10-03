@@ -20,7 +20,7 @@ export class ProjectConfig {
       language: "typescript",
       baseDir: "src",
       outputDir: "features",
-      defaultTypes: ["models", "hooks", "repositories", "interfaces", "enums"]
+      defaultTypes: ["entities", "hooks", "repositories", "interfaces", "enums"]
     };
   }
 

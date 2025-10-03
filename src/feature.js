@@ -3,7 +3,7 @@ import { ensureDirExists, ensureFile, loadTemplate, loadIndexTemplate } from "./
 
 export function createFeature(args, { only = [], except = [], config } = {}) {
   const featureName = args[args.length - 1];
-  
+
   // Construir o caminho base considerando baseDir
   const pathParts = config.baseDir ? [config.baseDir, config.outputDir, ...args] : [config.outputDir, ...args];
   const basePath = path.join(process.cwd(), ...pathParts);
@@ -13,7 +13,7 @@ export function createFeature(args, { only = [], except = [], config } = {}) {
 
   // Validar tipos fornecidos
   const allTypes = new Set(dirKeys);
-  
+
   if (only.length > 0) {
     const invalidTypes = only.filter(type => !allTypes.has(type));
     if (invalidTypes.length > 0) {
@@ -36,14 +36,16 @@ export function createFeature(args, { only = [], except = [], config } = {}) {
 
     // Define o nome correto do arquivo baseado no tipo
     const fileTypeMap = {
-      models: "model",
-      hooks: "hook", 
+      entities: "entity",
+      hooks: "hook",
       repositories: "repository",
       interfaces: "interface",
       enums: "enum"
     };
-    
-    const fileType = fileTypeMap[dirKey] || dirKey.slice(0, -1);
+
+    // Para tipos customizados, usa o nome do tipo menos o 's' final (se houver)
+    // ou mantém o nome do tipo se não terminar com 's'
+    const fileType = fileTypeMap[dirKey] || (dirKey.endsWith('s') ? dirKey.slice(0, -1) : dirKey);
     const filePath = path.join(fullPath, `${featureName}.${fileType}${config.fileExtension}`);
     const content = loadTemplate(dirKey, featureName, config.language);
 

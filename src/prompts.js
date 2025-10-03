@@ -48,7 +48,7 @@ export async function promptForTypes(defaultTypes) {
       name: "selectedTypes",
       message: chalk.cyan("📋 Quais tipos você quer gerar?"),
       choices: [
-        { name: "Models (classes de dados)", value: "models", checked: defaultTypes.includes("models") },
+        { name: "entities (classes de dados)", value: "entities", checked: defaultTypes.includes("entities") },
         { name: "Repositories (acesso a dados)", value: "repositories", checked: defaultTypes.includes("repositories") },
         { name: "Interfaces (contratos)", value: "interfaces", checked: defaultTypes.includes("interfaces") },
         { name: "Hooks (custom hooks)", value: "hooks", checked: defaultTypes.includes("hooks") },
@@ -106,7 +106,7 @@ export async function promptForNestedPath() {
       }
     }
   ]);
-  
+
   return hasNestedPath ? nestedPath.trim() : "";
 }
 

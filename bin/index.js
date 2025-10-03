@@ -39,11 +39,11 @@ ${chalk.yellow('Opções:')}
   --help, -h                 Mostra esta ajuda
 
 ${chalk.yellow('Tipos disponíveis:')}
-  models, repositories, interfaces, hooks, enums
+  entities, repositories, interfaces, hooks, enums
 
 ${chalk.yellow('Exemplos:')}
   npx genpaths User
-  npx genpaths Product --only models,interfaces
+  npx genpaths Product --only entities,interfaces
   npx genpaths Order --except enums --js
   npx genpaths auth Login
   npx genpaths init

@@ -10,7 +10,7 @@ Esta é a configuração criada automaticamente pelo comando `genpaths init`:
   "baseDir": "src",
   "outputDir": "features",
   "defaultTypes": [
-    "models",
+    "entities",
     "hooks",
     "repositories",
     "interfaces",
@@ -22,8 +22,8 @@ Esta é a configuração criada automaticamente pelo comando `genpaths init`:
 ### Resultado:
 ```
 src/features/User/
-  ├── models/
-  │   ├── User.model.ts
+  ├── entities/
+  │   ├── User.entity.ts
   │   └── index.ts
   ├── hooks/
   │   ├── User.hook.ts
@@ -50,7 +50,7 @@ src/features/User/
   "language": "javascript",
   "baseDir": "",
   "outputDir": "features",
-  "defaultTypes": ["models", "repositories"]
+  "defaultTypes": ["entities", "repositories"]
 }
 ```
 
@@ -59,8 +59,8 @@ src/features/User/
 **Resultado:**
 ```
 features/Product/
-  ├── models/
-  │   ├── Product.model.js
+  ├── entities/
+  │   ├── Product.entity.js
   │   └── index.js
   └── repositories/
       ├── Product.repository.js
@@ -76,7 +76,7 @@ features/Product/
   "language": "javascript",
   "baseDir": "lib",
   "outputDir": "modules",
-  "defaultTypes": ["models", "repositories", "interfaces"]
+  "defaultTypes": ["entities", "repositories", "interfaces"]
 }
 ```
 
@@ -85,8 +85,8 @@ features/Product/
 **Resultado:**
 ```
 lib/modules/Order/
-  ├── models/
-  │   ├── Order.model.js
+  ├── entities/
+  │   ├── Order.entity.js
   │   └── index.js
   ├── repositories/
   │   ├── Order.repository.js
@@ -105,7 +105,7 @@ lib/modules/Order/
   "language": "typescript",
   "baseDir": "src",
   "outputDir": "features",
-  "defaultTypes": ["models", "hooks", "interfaces"]
+  "defaultTypes": ["entities", "hooks", "interfaces"]
 }
 ```
 
@@ -114,8 +114,8 @@ lib/modules/Order/
 **Resultado:**
 ```
 src/features/auth/Login/
-  ├── models/
-  │   ├── Login.model.ts
+  ├── entities/
+  │   ├── Login.entity.ts
   │   └── index.ts
   ├── hooks/
   │   ├── Login.hook.ts
@@ -134,7 +134,7 @@ src/features/auth/Login/
   "language": "typescript",
   "baseDir": "src",
   "outputDir": "api",
-  "defaultTypes": ["models", "repositories", "interfaces"]
+  "defaultTypes": ["entities", "repositories", "interfaces"]
 }
 ```
 
@@ -143,8 +143,8 @@ src/features/auth/Login/
 **Resultado:**
 ```
 src/api/users/
-  ├── models/
-  │   ├── Users.model.ts
+  ├── entities/
+  │   ├── Users.entity.ts
   │   └── index.ts
   ├── repositories/
   │   ├── Users.repository.ts
@@ -163,7 +163,7 @@ src/api/users/
   "language": "typescript",
   "baseDir": "packages/core/src",
   "outputDir": "domain",
-  "defaultTypes": ["models", "interfaces", "enums"]
+  "defaultTypes": ["entities", "interfaces", "enums"]
 }
 ```
 
@@ -172,8 +172,8 @@ src/api/users/
 **Resultado:**
 ```
 packages/core/src/domain/Payment/
-  ├── models/
-  │   ├── Payment.model.ts
+  ├── entities/
+  │   ├── Payment.entity.ts
   │   └── index.ts
   ├── interfaces/
   │   ├── Payment.interface.ts
@@ -185,14 +185,14 @@ packages/core/src/domain/Payment/
 
 ---
 
-### 6. Projeto Minimalista (Apenas Models)
+### 6. Projeto Minimalista (Apenas entities)
 
 ```json
 {
   "language": "javascript",
   "baseDir": "",
-  "outputDir": "models",
-  "defaultTypes": ["models"]
+  "outputDir": "entities",
+  "defaultTypes": ["entities"]
 }
 ```
 
@@ -200,9 +200,9 @@ packages/core/src/domain/Payment/
 
 **Resultado:**
 ```
-models/User/
-  └── models/
-      ├── User.model.js
+entities/User/
+  └── entities/
+      ├── User.entity.js
       └── index.js
 ```
 
@@ -215,7 +215,7 @@ models/User/
   "language": "typescript",
   "baseDir": "src",
   "outputDir": "services",
-  "defaultTypes": ["models", "repositories", "interfaces"]
+  "defaultTypes": ["entities", "repositories", "interfaces"]
 }
 ```
 
@@ -224,8 +224,8 @@ models/User/
 **Resultado:**
 ```
 src/services/notifications/Email/
-  ├── models/
-  │   ├── Email.model.ts
+  ├── entities/
+  │   ├── Email.entity.ts
   │   └── index.ts
   ├── repositories/
   │   ├── Email.repository.ts
@@ -266,6 +266,205 @@ genpaths User --js
 
 ---
 
+## 🎨 Tipos Customizados
+
+### Exemplo 1: Services
+
+**Configuração:**
+```json
+{
+  "language": "typescript",
+  "baseDir": "src",
+  "outputDir": "features",
+  "defaultTypes": [
+    "entities",
+    "repositories",
+    "services"
+  ]
+}
+```
+
+**Templates customizados:**
+```bash
+# Criar estrutura
+mkdir -p generator/templates/services
+
+# Template do service
+cat > generator/templates/services/{feature}.service.ts << 'EOF'
+// Service for {{feature}}
+export class {{feature}}Service {
+  constructor(private repository: {{feature}}Repository) {}
+
+  async findById(id: string) {
+    return await this.repository.findById(id);
+  }
+
+  async create(data: any) {
+    return await this.repository.create(data);
+  }
+}
+EOF
+
+# Template do index
+cat > generator/templates/services/index.ts << 'EOF'
+export * from './{{feature}}.service';
+EOF
+```
+
+**Uso:** `genpaths User`
+
+**Resultado:**
+```
+src/features/User/
+  ├── entities/
+  │   ├── User.entity.ts
+  │   └── index.ts
+  ├── repositories/
+  │   ├── User.repository.ts
+  │   └── index.ts
+  └── services/
+      ├── User.service.ts
+      └── index.ts
+```
+
+---
+
+### Exemplo 2: Controllers (NestJS/Express)
+
+**Configuração:**
+```json
+{
+  "language": "typescript",
+  "baseDir": "src",
+  "outputDir": "modules",
+  "defaultTypes": [
+    "controllers",
+    "services",
+    "dtos"
+  ]
+}
+```
+
+**Templates customizados:**
+```bash
+# Controllers
+mkdir -p generator/templates/controllers
+cat > generator/templates/controllers/{feature}.controller.ts << 'EOF'
+import { Controller, Get, Post } from '@nestjs/common';
+import { {{feature}}Service } from '../services';
+
+@Controller('{{feature}}')
+export class {{feature}}Controller {
+  constructor(private service: {{feature}}Service) {}
+
+  @Get()
+  async findAll() {
+    return this.service.findAll();
+  }
+}
+EOF
+
+cat > generator/templates/controllers/index.ts << 'EOF'
+export * from './{{feature}}.controller';
+EOF
+
+# DTOs
+mkdir -p generator/templates/dtos
+cat > generator/templates/dtos/{feature}.dto.ts << 'EOF'
+export class Create{{feature}}DTO {
+  name: string;
+  // Add more properties
+}
+
+export class Update{{feature}}DTO {
+  name?: string;
+  // Add more properties
+}
+EOF
+
+cat > generator/templates/dtos/index.ts << 'EOF'
+export * from './{{feature}}.dto';
+EOF
+```
+
+**Uso:** `genpaths Product`
+
+**Resultado:**
+```
+src/modules/Product/
+  ├── controllers/
+  │   ├── Product.controller.ts
+  │   └── index.ts
+  ├── services/
+  │   ├── Product.service.ts
+  │   └── index.ts
+  └── dtos/
+      ├── Product.dto.ts
+      └── index.ts
+```
+
+---
+
+### Exemplo 3: Validators + Schemas
+
+**Configuração:**
+```json
+{
+  "language": "typescript",
+  "baseDir": "src",
+  "outputDir": "features",
+  "defaultTypes": [
+    "entities",
+    "validators",
+    "schemas"
+  ]
+}
+```
+
+**Templates customizados:**
+```bash
+# Validators
+mkdir -p generator/templates/validators
+cat > generator/templates/validators/{feature}.validator.ts << 'EOF'
+export class {{feature}}Validator {
+  validate(data: any): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    // Add validation logic
+
+    return {
+      valid: errors.length === 0,
+      errors
+    };
+  }
+}
+EOF
+
+cat > generator/templates/validators/index.ts << 'EOF'
+export * from './{{feature}}.validator';
+EOF
+
+# Schemas (Zod/Yup)
+mkdir -p generator/templates/schemas
+cat > generator/templates/schemas/{feature}.schema.ts << 'EOF'
+import { z } from 'zod';
+
+export const {{feature}}Schema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1),
+  // Add more fields
+});
+
+export type {{feature}} = z.infer<typeof {{feature}}Schema>;
+EOF
+
+cat > generator/templates/schemas/index.ts << 'EOF'
+export * from './{{feature}}.schema';
+EOF
+```
+
+---
+
 ## 🔄 Migrando de Versões Antigas
 
 Se você tem um `.genpaths.json` antigo sem `baseDir`, apenas adicione:
@@ -275,7 +474,7 @@ Se você tem um `.genpaths.json` antigo sem `baseDir`, apenas adicione:
   "language": "typescript",
   "baseDir": "src",          // ← Adicione esta linha
   "outputDir": "features",
-  "defaultTypes": ["models", "hooks"]
+  "defaultTypes": ["entities", "hooks"]
 }
 ```
 

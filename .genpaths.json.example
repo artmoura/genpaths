@@ -3,7 +3,7 @@
   "baseDir": "src",
   "outputDir": "features",
   "defaultTypes": [
-    "models",
+    "entities",
     "hooks",
     "repositories",
     "interfaces",

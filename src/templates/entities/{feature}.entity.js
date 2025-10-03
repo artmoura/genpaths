@@ -1,5 +1,5 @@
-// Model for {{feature}}
-export class {{feature}}Model {
+// Entity for {{feature}}
+export class {{feature}}Entity {
   constructor(id) {
     this.id = id;
   }
