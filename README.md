@@ -19,6 +19,7 @@ npm install -g genpaths
 ## 🎯 Características
 
 - ✅ Suporte para **JavaScript** e **TypeScript**
+- ✅ **Suporte a múltiplos idiomas** (Português e Inglês)
 - ✅ Templates personalizáveis
 - ✅ Configuração flexível via arquivo `.genpaths.json`
 - ✅ **Arquivos index.{ts/js} automáticos** em cada pasta de tipo
@@ -115,8 +116,60 @@ npx genpaths --help
 | `--except <tipos>`  | Gera todos exceto os especificados | `--except enums`           |
 | `--js`              | Força geração em JavaScript        | `--js`                     |
 | `--ts`              | Força geração em TypeScript        | `--ts`                     |
+| `--locale, -l`      | Define o idioma (pt-BR ou en)      | `--locale en`              |
 | `--interactive, -i` | Força modo interativo              | `-i`                       |
 | `--help, -h`        | Mostra ajuda                       | `--help`                   |
+
+### 🌍 Localização (i18n)
+
+O genpaths suporta múltiplos idiomas para tornar a ferramenta mais acessível!
+
+#### Idiomas Disponíveis
+
+- 🇧🇷 **Português (pt-BR)** - Idioma padrão
+- 🇺🇸 **Inglês (en)**
+
+#### Como Usar
+
+```bash
+# Durante o init, escolha seu idioma preferido
+npx genpaths init
+
+# Ou defina diretamente via linha de comando
+npx genpaths --locale en
+npx genpaths User --locale pt-BR
+
+# O idioma é salvo no .genpaths.json para uso futuro
+```
+
+#### Exemplos de Uso
+
+**🇧🇷 Em Português:**
+```bash
+$ npx genpaths User
+
+🏗️  Gerando feature "User" em typescript...
+✨ Feature criada com sucesso!
+```
+
+**🇺🇸 In English:**
+```bash
+$ npx genpaths User --locale en
+
+🏗️  Generating feature "User" in typescript...
+✨ Feature created successfully!
+```
+
+#### Contribuindo com Traduções
+
+Quer adicionar um novo idioma? É fácil!
+
+1. Crie um arquivo `src/locales/[codigo].json` (ex: `es.json` para espanhol)
+2. Copie a estrutura de `en.json` ou `pt-BR.json`
+3. Traduza todas as strings
+4. Adicione o idioma em `src/locales/index.js`
+5. Atualize o prompt em `src/prompts.js`
+6. Abra um Pull Request! 🎉
 
 ## 🔧 Configuração
 
@@ -131,6 +184,7 @@ Este é o padrão criado pelo comando `genpaths init`:
 ```json
 {
   "language": "typescript",
+  "locale": "pt-BR",
   "baseDir": "src",
   "outputDir": "features",
   "defaultTypes": [
@@ -145,10 +199,11 @@ Este é o padrão criado pelo comando `genpaths init`:
 
 #### Exemplos de Configurações
 
-**JavaScript sem pasta base:**
+**JavaScript sem pasta base (Inglês):**
 ```json
 {
   "language": "javascript",
+  "locale": "en",
   "baseDir": "",
   "outputDir": "features",
   "defaultTypes": ["entities", "repositories"]
@@ -159,6 +214,7 @@ Este é o padrão criado pelo comando `genpaths init`:
 ```json
 {
   "language": "typescript",
+  "locale": "pt-BR",
   "baseDir": "lib",
   "outputDir": "modules",
   "defaultTypes": ["entities", "interfaces", "hooks"]
@@ -169,6 +225,7 @@ Este é o padrão criado pelo comando `genpaths init`:
 ```json
 {
   "language": "javascript",
+  "locale": "en",
   "baseDir": "",
   "outputDir": "components",
   "defaultTypes": ["entities"]
@@ -180,6 +237,7 @@ Este é o padrão criado pelo comando `genpaths init`:
 | Opção | Descrição | Exemplo | Padrão |
 |-------|-----------|---------|--------|
 | `language` | Linguagem do projeto | `"typescript"` ou `"javascript"` | `"typescript"` |
+| `locale` | Idioma da interface | `"pt-BR"` ou `"en"` | `"pt-BR"` |
 | `baseDir` | Pasta base do projeto | `"src"`, `"lib"`, `""` (vazio para nenhuma) | `"src"` |
 | `outputDir` | Pasta onde features serão criadas | `"features"`, `"modules"` | `"features"` |
 | `defaultTypes` | Tipos de arquivo a serem gerados | `["entities", "hooks"]` | `["entities", "hooks", "repositories", "interfaces", "enums"]` |
@@ -192,6 +250,7 @@ npx genpaths init
 
 Este comando guiará você através de um processo interativo para configurar:
 
+- **Idioma preferido** (Português ou Inglês)
 - Linguagem padrão (JS/TS)
 - Pasta base (src, lib, ou nenhuma)
 - Diretório de saída
@@ -466,22 +525,34 @@ genpaths --help
 
 ## 🤝 Contribuindo
 
+Contribuições são bem-vindas! Aqui estão algumas formas de ajudar:
+
+### 🌍 Adicionar Traduções
+
+Quer adicionar um novo idioma?
+
+1. Crie `src/locales/[codigo].json` (ex: `es.json`)
+2. Copie e traduza a estrutura de `en.json` ou `pt-BR.json`
+3. Adicione o código em `src/locales/index.js`
+4. Atualize `src/prompts.js` com a nova opção
+
+### 💻 Código
+
 1. Fork o projeto [GitHub](https://github.com/artmoura/genpaths)
 2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
 3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
 4. Push para a branch (`git push origin feature/nova-feature`)
 5. Crie um Pull Request
 
-## 📚 Documentação
+## 📚 Documentação Adicional
 
-- 📖 **README**: Você está aqui
-- 🎨 **[Guia de Tipos Customizados](CUSTOM_TYPES.md)**: Aprenda a criar seus próprios tipos
-- 📝 **[Exemplos de Configuração](EXAMPLES.md)**: Exemplos práticos de uso
+- 📖 [EXAMPLES.md](EXAMPLES.md) - Exemplos práticos detalhados de uso
+- 🔧 [CUSTOM_TYPES.md](CUSTOM_TYPES.md) - Como criar tipos customizados
+- 📝 [CHANGELOG.md](CHANGELOG.md) - Histórico de versões e mudanças
 
-## � Suporte
+## 🆘 Suporte
 
 - 🐛 **Issues**: [GitHub Issues](https://github.com/artmoura/genpaths/issues)
-- 💬 **Discussões**: [GitHub Discussions](https://github.com/artmoura/genpaths/discussions)
 
 ## 🎉 Agradecimentos
 

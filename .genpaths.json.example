@@ -1,5 +1,6 @@
 {
   "language": "typescript",
+  "locale": "pt-BR",
   "baseDir": "src",
   "outputDir": "features",
   "defaultTypes": [

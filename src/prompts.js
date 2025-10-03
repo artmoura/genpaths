@@ -1,15 +1,32 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
+import { t } from "./i18n.js";
+
+export async function promptForLocale() {
+  const { locale } = await inquirer.prompt([
+    {
+      type: "list",
+      name: "locale",
+      message: chalk.cyan(t('prompt.locale')),
+      choices: [
+        { name: t('prompt.localePortuguese'), value: "pt-BR" },
+        { name: t('prompt.localeEnglish'), value: "en" }
+      ],
+      default: "pt-BR"
+    }
+  ]);
+  return locale;
+}
 
 export async function promptForLanguage() {
   const { language } = await inquirer.prompt([
     {
       type: "list",
       name: "language",
-      message: chalk.cyan("🔧 Qual linguagem você está usando?"),
+      message: chalk.cyan(t('prompt.language')),
       choices: [
-        { name: "TypeScript (.ts)", value: "typescript" },
-        { name: "JavaScript (.js)", value: "javascript" }
+        { name: t('prompt.languageTypescript'), value: "typescript" },
+        { name: t('prompt.languageJavascript'), value: "javascript" }
       ],
       default: "typescript"
     }
@@ -22,7 +39,7 @@ export async function promptForOutputDir(currentDir = "features") {
     {
       type: "input",
       name: "outputDir",
-      message: chalk.cyan("📁 Qual pasta para gerar os arquivos?"),
+      message: chalk.cyan(t('prompt.outputDir')),
       default: currentDir
     }
   ]);
@@ -34,7 +51,7 @@ export async function promptForBaseDir(currentBaseDir = "src") {
     {
       type: "input",
       name: "baseDir",
-      message: chalk.cyan("📂 Qual pasta base? (deixe vazio para nenhuma, ex: 'src')"),
+      message: chalk.cyan(t('prompt.baseDir')),
       default: currentBaseDir
     }
   ]);
@@ -46,17 +63,17 @@ export async function promptForTypes(defaultTypes) {
     {
       type: "checkbox",
       name: "selectedTypes",
-      message: chalk.cyan("📋 Quais tipos você quer gerar?"),
+      message: chalk.cyan(t('prompt.types')),
       choices: [
-        { name: "entities (classes de dados)", value: "entities", checked: defaultTypes.includes("entities") },
-        { name: "Repositories (acesso a dados)", value: "repositories", checked: defaultTypes.includes("repositories") },
-        { name: "Interfaces (contratos)", value: "interfaces", checked: defaultTypes.includes("interfaces") },
-        { name: "Hooks (custom hooks)", value: "hooks", checked: defaultTypes.includes("hooks") },
-        { name: "Enums (enumerações)", value: "enums", checked: defaultTypes.includes("enums") }
+        { name: t('prompt.typesEntities'), value: "entities", checked: defaultTypes.includes("entities") },
+        { name: t('prompt.typesRepositories'), value: "repositories", checked: defaultTypes.includes("repositories") },
+        { name: t('prompt.typesInterfaces'), value: "interfaces", checked: defaultTypes.includes("interfaces") },
+        { name: t('prompt.typesHooks'), value: "hooks", checked: defaultTypes.includes("hooks") },
+        { name: t('prompt.typesEnums'), value: "enums", checked: defaultTypes.includes("enums") }
       ],
       validate: (answer) => {
         if (answer.length < 1) {
-          return "Você deve escolher pelo menos um tipo!";
+          return t('prompt.typesValidate');
         }
         return true;
       }
@@ -70,13 +87,13 @@ export async function promptForFeatureName() {
     {
       type: "input",
       name: "featureName",
-      message: chalk.cyan("🏗️  Qual o nome da feature?"),
+      message: chalk.cyan(t('prompt.featureName')),
       validate: (input) => {
         if (!input.trim()) {
-          return "Nome da feature é obrigatório!";
+          return t('prompt.featureNameRequired');
         }
         if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(input.trim())) {
-          return "Nome deve começar com letra e conter apenas letras e números!";
+          return t('prompt.featureNameInvalid');
         }
         return true;
       }
@@ -90,17 +107,17 @@ export async function promptForNestedPath() {
     {
       type: "confirm",
       name: "hasNestedPath",
-      message: chalk.cyan("📂 Quer criar em uma subpasta? (ex: auth/login)"),
+      message: chalk.cyan(t('prompt.nestedPath')),
       default: false
     },
     {
       type: "input",
       name: "nestedPath",
-      message: chalk.cyan("📂 Digite o caminho (ex: auth):"),
+      message: chalk.cyan(t('prompt.nestedPathInput')),
       when: (answers) => answers.hasNestedPath,
       validate: (input) => {
         if (!input.trim()) {
-          return "Caminho é obrigatório quando selecionado!";
+          return t('prompt.nestedPathRequired');
         }
         return true;
       }
@@ -115,7 +132,7 @@ export async function promptForConfigSave() {
     {
       type: "confirm",
       name: "saveConfig",
-      message: chalk.cyan("💾 Salvar essas configurações para próximas execuções?"),
+      message: chalk.cyan(t('prompt.configSave')),
       default: true
     }
   ]);
@@ -127,7 +144,7 @@ export async function promptForInteractiveMode() {
     {
       type: "confirm",
       name: "useInteractive",
-      message: chalk.cyan("🤖 Usar modo interativo? (recomendado para primeira vez)"),
+      message: chalk.cyan(t('prompt.interactive')),
       default: true
     }
   ]);

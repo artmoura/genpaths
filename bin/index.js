@@ -3,6 +3,7 @@ import chalk from "chalk";
 import { createFeature } from "../src/feature.js";
 import { copyDefaults } from "../src/utils.js";
 import { ProjectConfig } from "../src/config.js";
+import { t, setLocale } from "../src/i18n.js";
 import {
   promptForLanguage,
   promptForOutputDir,
@@ -11,54 +12,30 @@ import {
   promptForFeatureName,
   promptForNestedPath,
   promptForConfigSave,
-  promptForInteractiveMode
+  promptForInteractiveMode,
+  promptForLocale
 } from "../src/prompts.js";
 
 const args = process.argv.slice(2);
 
 // Função para mostrar ajuda
 function showHelp() {
-  console.log(chalk.blue(`
-🚀 Path Generator - Gerador automático de estruturas de arquivos
-
-${chalk.yellow('Uso:')}
-  npx genpaths [comando] [opções]
-  npx genpaths <nome-da-feature> [opções]
-
-${chalk.yellow('Comandos:')}
-  defaults                    Copia templates padrão para personalização
-  init                        Configura o projeto interativamente
-  config                      Mostra configuração atual
-
-${chalk.yellow('Opções:')}
-  --only <tipos>             Gera apenas os tipos especificados
-  --except <tipos>           Gera todos os tipos exceto os especificados
-  --interactive, -i          Força modo interativo
-  --js                       Gera arquivos JavaScript
-  --ts                       Gera arquivos TypeScript
-  --help, -h                 Mostra esta ajuda
-
-${chalk.yellow('Tipos disponíveis:')}
-  entities, repositories, interfaces, hooks, enums
-
-${chalk.yellow('Exemplos:')}
-  npx genpaths User
-  npx genpaths Product --only entities,interfaces
-  npx genpaths Order --except enums --js
-  npx genpaths auth Login
-  npx genpaths init
-  npx genpaths defaults
-
-${chalk.gray('Para mais informações: https://github.com/seu-usuario/genpaths')}
-`));
+  console.log(chalk.blue(`\n${t('help.title')}\n\n${chalk.yellow(t('help.usage'))}\n  ${t('help.usageLine1')}\n  ${t('help.usageLine2')}\n\n${chalk.yellow(t('help.commands'))}\n  defaults                    ${t('help.commandsDefaults')}\n  init                        ${t('help.commandsInit')}\n  config                      ${t('help.commandsConfig')}\n\n${chalk.yellow(t('help.options'))}\n  --only <tipos>             ${t('help.optionsOnly')}\n  --except <tipos>           ${t('help.optionsExcept')}\n  --interactive, -i          ${t('help.optionsInteractive')}\n  --js                       ${t('help.optionsJs')}\n  --ts                       ${t('help.optionsTs')}\n  --locale, -l <locale>      ${t('help.optionsLocale')}\n  --help, -h                 ${t('help.optionsHelp')}\n\n${chalk.yellow(t('help.availableTypes'))}\n  entities, repositories, interfaces, hooks, enums\n\n${chalk.yellow(t('help.examples'))}\n  npx genpaths User\n  npx genpaths Product --only entities,interfaces\n  npx genpaths Order --except enums --js\n  npx genpaths auth Login\n  npx genpaths init\n  npx genpaths defaults\n  npx genpaths --locale en\n  npx genpaths User --locale pt-BR\n\n${chalk.gray(t('help.moreInfo'))}\n`));
 }
 
 async function runInteractiveMode(config) {
-  console.log(chalk.blue('\n🤖 Modo Interativo\n'));
+  console.log(chalk.blue('\n' + t('message.interactiveMode') + '\n'));
 
   // Se não há configuração, configura o projeto
   if (!config.configPath || args.includes('init')) {
-    console.log(chalk.yellow('⚙️  Configurando projeto...'));
+    console.log(chalk.yellow(t('message.configuringProject')));
+
+    // Perguntar idioma primeiro se for init ou não houver configuração
+    if (!config.config.locale || args.includes('init')) {
+      const locale = await promptForLocale();
+      setLocale(locale);
+      config.updateConfig({ locale });
+    }
 
     const language = await promptForLanguage();
     const baseDir = await promptForBaseDir(config.baseDir);
@@ -66,7 +43,7 @@ async function runInteractiveMode(config) {
     const defaultTypes = await promptForTypes(config.defaultTypes);
 
     config.updateConfig({ language, baseDir, outputDir, defaultTypes });
-    console.log(chalk.green('✅ Configuração salva!\n'));
+    console.log(chalk.green(t('message.configSaved') + '\n'));
   }
 
   // Prompt para feature
@@ -88,6 +65,7 @@ async function runCommandMode(config) {
   let except = [];
   const featureArgs = [];
   let forceLanguage = null;
+  let forceLocale = null;
 
   args.forEach((arg, i) => {
     if (arg === "--only") {
@@ -104,10 +82,21 @@ async function runCommandMode(config) {
       forceLanguage = "javascript";
     } else if (arg === "--ts") {
       forceLanguage = "typescript";
-    } else if (!args[i - 1]?.startsWith("--")) {
+    } else if (arg === "--locale" || arg === "-l") {
+      const nextArg = args[i + 1];
+      if (nextArg) {
+        forceLocale = nextArg;
+      }
+    } else if (!args[i - 1]?.startsWith("--") && !args[i - 1]?.startsWith("-")) {
       featureArgs.push(arg);
     }
   });
+
+  // Aplica override de locale se especificado
+  if (forceLocale) {
+    setLocale(forceLocale);
+    config.updateConfig({ locale: forceLocale });
+  }
 
   // Aplica override de linguagem se especificado
   if (forceLanguage) {
@@ -141,12 +130,13 @@ async function main() {
     }
 
     if (args[0] === "config") {
-      console.log(chalk.blue('\n📋 Configuração atual:'));
-      console.log(chalk.gray('Linguagem:'), chalk.green(config.language));
-      console.log(chalk.gray('Pasta base:'), chalk.green(config.baseDir || '(nenhuma)'));
-      console.log(chalk.gray('Pasta de saída:'), chalk.green(config.outputDir));
-      console.log(chalk.gray('Tipos padrão:'), chalk.green(config.defaultTypes.join(', ')));
-      console.log(chalk.gray('Extensão:'), chalk.green(config.fileExtension));
+      console.log(chalk.blue('\n' + t('message.currentConfig')));
+      console.log(chalk.gray(t('message.configLanguage')), chalk.green(config.language));
+      console.log(chalk.gray(t('message.configLocale')), chalk.green(config.locale));
+      console.log(chalk.gray(t('message.configBaseDir')), chalk.green(config.baseDir || t('message.configBaseDirNone')));
+      console.log(chalk.gray(t('message.configOutputDir')), chalk.green(config.outputDir));
+      console.log(chalk.gray(t('message.configDefaultTypes')), chalk.green(config.defaultTypes.join(', ')));
+      console.log(chalk.gray(t('message.configExtension')), chalk.green(config.fileExtension));
       return;
     }
 
@@ -163,18 +153,18 @@ async function main() {
 
     // Validar se foi fornecido um nome de feature
     if (featureArgs.length === 0) {
-      console.error(chalk.red("❌ Erro: Nome da feature é obrigatório"));
-      console.log("Use: npx genpaths <nome-da-feature>");
-      console.log("Ou use: npx genpaths --interactive");
+      console.error(chalk.red(t('error.featureRequired')));
+      console.log(t('error.featureRequiredHint1'));
+      console.log(t('error.featureRequiredHint2'));
       process.exit(1);
     }
 
     // Executar geração
-    console.log(chalk.blue(`\n🏗️  Gerando feature "${featureArgs[featureArgs.length - 1]}" em ${config.language}...\n`));
+    console.log(chalk.blue(`\n${t('message.generating', featureArgs[featureArgs.length - 1], config.language)}\n`));
     createFeature(featureArgs, options);
 
   } catch (error) {
-    console.error(chalk.red("❌ Erro:"), error.message);
+    console.error(chalk.red(t('error.generic')), error.message);
     process.exit(1);
   }
 }
