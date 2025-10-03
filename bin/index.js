@@ -18,6 +18,26 @@ import {
 
 const args = process.argv.slice(2);
 
+// Função para validar nome de feature
+function isValidFeatureName(name) {
+  // Não pode começar com - ou --
+  if (name.startsWith('-')) {
+    return { valid: false, reason: 'invalidStart' };
+  }
+
+  // Deve começar com letra
+  if (!/^[a-zA-Z]/.test(name)) {
+    return { valid: false, reason: 'mustStartWithLetter' };
+  }
+
+  // Pode conter letras, números, underscore e barra
+  if (!/^[a-zA-Z][a-zA-Z0-9_\/]*$/.test(name)) {
+    return { valid: false, reason: 'invalidCharacters' };
+  }
+
+  return { valid: true };
+}
+
 // Função para mostrar ajuda
 function showHelp() {
   console.log(chalk.blue(`\n${t('help.title')}\n\n${chalk.yellow(t('help.usage'))}\n  ${t('help.usageLine1')}\n  ${t('help.usageLine2')}\n\n${chalk.yellow(t('help.commands'))}\n  defaults                    ${t('help.commandsDefaults')}\n  init                        ${t('help.commandsInit')}\n  config                      ${t('help.commandsConfig')}\n\n${chalk.yellow(t('help.options'))}\n  --only <tipos>             ${t('help.optionsOnly')}\n  --except <tipos>           ${t('help.optionsExcept')}\n  --interactive, -i          ${t('help.optionsInteractive')}\n  --js                       ${t('help.optionsJs')}\n  --ts                       ${t('help.optionsTs')}\n  --locale, -l <locale>      ${t('help.optionsLocale')}\n  --help, -h                 ${t('help.optionsHelp')}\n\n${chalk.yellow(t('help.availableTypes'))}\n  entities, repositories, interfaces, hooks, enums\n\n${chalk.yellow(t('help.examples'))}\n  npx genpaths User\n  npx genpaths Product --only entities,interfaces\n  npx genpaths Order --except enums --js\n  npx genpaths auth Login\n  npx genpaths init\n  npx genpaths defaults\n  npx genpaths --locale en\n  npx genpaths User --locale pt-BR\n\n${chalk.gray(t('help.moreInfo'))}\n`));
@@ -88,7 +108,10 @@ async function runCommandMode(config) {
         forceLocale = nextArg;
       }
     } else if (!args[i - 1]?.startsWith("--") && !args[i - 1]?.startsWith("-")) {
-      featureArgs.push(arg);
+      // Só adiciona se não for uma flag
+      if (!arg.startsWith('-')) {
+        featureArgs.push(arg);
+      }
     }
   });
 
@@ -157,6 +180,26 @@ async function main() {
       console.log(t('error.featureRequiredHint1'));
       console.log(t('error.featureRequiredHint2'));
       process.exit(1);
+    }
+
+    // Validar nomes de features
+    for (const featureName of featureArgs) {
+      const validation = isValidFeatureName(featureName);
+      if (!validation.valid) {
+        console.error(chalk.red(t('error.invalidFeatureName', featureName)));
+
+        if (validation.reason === 'invalidStart') {
+          console.log(chalk.yellow(t('error.featureNameStartsWithDash')));
+          console.log(chalk.gray(t('error.featureNameStartsWithDashHint')));
+        } else if (validation.reason === 'mustStartWithLetter') {
+          console.log(chalk.yellow(t('error.featureNameMustStartWithLetter')));
+        } else if (validation.reason === 'invalidCharacters') {
+          console.log(chalk.yellow(t('error.featureNameInvalidCharacters')));
+          console.log(chalk.gray(t('error.featureNameValidFormat')));
+        }
+
+        process.exit(1);
+      }
     }
 
     // Executar geração

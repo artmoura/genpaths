@@ -43,7 +43,13 @@
     "featureRequiredHint1": "Use: npx genpaths <feature-name>",
     "featureRequiredHint2": "Or use: npx genpaths --interactive",
     "generic": "❌ Error:",
-    "invalidConfig": "⚠️  Invalid configuration file, using defaults"
+    "invalidConfig": "⚠️  Invalid configuration file, using defaults",
+    "invalidFeatureName": "❌ Error: Invalid feature name: \"{0}\"",
+    "featureNameStartsWithDash": "Name cannot start with '-' or '--' (looks like a command line option)",
+    "featureNameStartsWithDashHint": "Did you mean to use an option? Ex: npx genpaths User --locale en",
+    "featureNameMustStartWithLetter": "Name must start with a letter (a-z, A-Z)",
+    "featureNameInvalidCharacters": "Name contains invalid characters",
+    "featureNameValidFormat": "Valid format: letters, numbers, underscore (_) and slash (/). Ex: User, user_profile, auth/Login"
   },
   "help": {
     "title": "🚀 Path Generator - Automatic file structure generator",
