@@ -31,8 +31,12 @@ npm install -g genpaths
 
 ## 🚀 Uso Rápido
 
+## 🚀 Uso Rápido
+
 ### Gerar uma feature completa
 
+```bash
+npx genpaths create User
 ```
 
 Isso criará a seguinte estrutura:
@@ -59,6 +63,45 @@ src/
 
 ### Gerar apenas tipos específicos
 ```bash
+# Apenas entities e repositories
+npx genpaths create Product --types entities,repositories
+
+# Apenas hooks
+npx genpaths create useAuth --types hooks
+
+# Todos exceto enums
+npx genpaths create Order --except enums
+```
+
+### Customizar localização
+
+```bash
+# Gerar em pasta base diferente
+npx genpaths create shared/helpers --base-dir src/utils
+
+# Gerar em pasta de saída diferente
+npx genpaths create User --output-dir modules
+```
+
+### Especificar linguagem
+
+```bash
+# Forçar JavaScript
+npx genpaths create Auth --js
+
+# Forçar TypeScript
+npx genpaths create Auth --ts
+```
+
+### Paths aninhados
+
+```bash
+# Cria em features/auth/Login/
+npx genpaths create auth/Login
+```
+
+### Gerar apenas tipos específicos
+```bash
 # Apenas entities e interfaces
 npx genpaths Product --only entities,interfaces
 
@@ -69,18 +112,17 @@ npx genpaths Order --except enums
 ### Especificar linguagem
 
 ```bash
-# Forçar JavaScript
-npx genpaths Auth --js
+npx genpaths create Auth --js
 
 # Forçar TypeScript
-npx genpaths Auth --ts
+npx genpaths create Auth --ts
 ```
 
 ### Paths aninhados
 
 ```bash
 # Cria em features/auth/Login/
-npx genpaths auth Login
+npx genpaths create auth/Login
 ```
 
 ## 📋 Comandos Disponíveis
@@ -88,11 +130,10 @@ npx genpaths auth Login
 ### Gerar Feature
 
 ```bash
-npx genpaths <nome-da-feature> [opções]
-npx genpaths <path> <nome-da-feature> [opções]
+npx genpaths create <nome> [opções]
 ```
 
-### Comandos Especiais
+### Comandos Utilitários
 
 ```bash
 # Configurar projeto interativamente
@@ -110,15 +151,17 @@ npx genpaths --help
 
 ## ⚙️ Opções de CLI
 
-| Opção               | Descrição                          | Exemplo                    |
-| ------------------- | ---------------------------------- | -------------------------- |
-| `--only <tipos>`    | Gera apenas os tipos especificados | `--only entities,interfaces` |
-| `--except <tipos>`  | Gera todos exceto os especificados | `--except enums`           |
-| `--js`              | Força geração em JavaScript        | `--js`                     |
-| `--ts`              | Força geração em TypeScript        | `--ts`                     |
-| `--locale, -l`      | Define o idioma (pt-BR ou en)      | `--locale en`              |
-| `--interactive, -i` | Força modo interativo              | `-i`                       |
-| `--help, -h`        | Mostra ajuda                       | `--help`                   |
+| Opção                | Descrição                                    | Exemplo                              |
+| -------------------- | -------------------------------------------- | ------------------------------------ |
+| `--types <tipos>`    | Tipos a gerar                                | `--types entities,repositories`      |
+| `--except <tipos>`   | Gera todos exceto os especificados           | `--except enums`                     |
+| `--base-dir <pasta>` | Pasta base do projeto (sobrescreve config)   | `--base-dir src/utils`               |
+| `--output-dir <pasta>`| Pasta de saída (sobrescreve config)         | `--output-dir modules`               |
+| `--js`               | Força geração em JavaScript                  | `--js`                               |
+| `--ts`               | Força geração em TypeScript                  | `--ts`                               |
+| `--locale, -l`       | Define o idioma (pt-BR ou en)                | `--locale en`                        |
+| `--interactive, -i`  | Força modo interativo                        | `-i`                                 |
+| `--help, -h`         | Mostra ajuda                                 | `--help`                             |
 
 ### 🌍 Localização (i18n)
 
