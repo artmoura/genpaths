@@ -1,0 +1,85 @@
+import { {{FEATURE_NAME}}Entity } from './{{FEATURE_NAME}}Entity';
+import { I{{FEATURE_NAME}}Repository } from './{{FEATURE_NAME}}Repository';
+
+export interface Create{{FEATURE_NAME}}Input {
+  name: string;
+  isActive?: boolean;
+}
+
+export interface Update{{FEATURE_NAME}}Input {
+  name?: string;
+  isActive?: boolean;
+}
+
+export class Create{{FEATURE_NAME}}UseCase {
+  constructor(private repository: I{{FEATURE_NAME}}Repository) {}
+
+  async execute(input: Create{{FEATURE_NAME}}Input): Promise<{{FEATURE_NAME}}Entity> {
+    const id = this.generateId();
+    const entity = new {{FEATURE_NAME}}Entity(
+      id,
+      input.name,
+      input.isActive
+    );
+
+    await this.repository.save(entity);
+    return entity;
+  }
+
+  private generateId(): string {
+    return `{{FEATURE_NAME_LOWER}}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+}
+
+export class Get{{FEATURE_NAME}}UseCase {
+  constructor(private repository: I{{FEATURE_NAME}}Repository) {}
+
+  async execute(id: string): Promise<{{FEATURE_NAME}}Entity> {
+    const entity = await this.repository.findById(id);
+
+    if (!entity) {
+      throw new Error('{{FEATURE_NAME}} not found');
+    }
+
+    return entity;
+  }
+}
+
+export class GetAll{{FEATURE_NAME}}sUseCase {
+  constructor(private repository: I{{FEATURE_NAME}}Repository) {}
+
+  async execute(): Promise<{{FEATURE_NAME}}Entity[]> {
+    return this.repository.findAll();
+  }
+}
+
+export class Update{{FEATURE_NAME}}UseCase {
+  constructor(private repository: I{{FEATURE_NAME}}Repository) {}
+
+  async execute(id: string, input: Update{{FEATURE_NAME}}Input): Promise<{{FEATURE_NAME}}Entity> {
+    const entity = await this.repository.findById(id);
+
+    if (!entity) {
+      throw new Error('{{FEATURE_NAME}} not found');
+    }
+
+    if (input.name !== undefined) {
+      entity.updateName(input.name);
+    }
+
+    if (input.isActive !== undefined) {
+      input.isActive ? entity.activate() : entity.deactivate();
+    }
+
+    await this.repository.save(entity);
+    return entity;
+  }
+}
+
+export class Delete{{FEATURE_NAME}}UseCase {
+  constructor(private repository: I{{FEATURE_NAME}}Repository) {}
+
+  async execute(id: string): Promise<void> {
+    await this.repository.delete(id);
+  }
+}

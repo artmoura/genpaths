@@ -5,119 +5,99 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function resolveTemplatePath(dirKey, language = "typescript") {
-  // Define o nome correto do arquivo baseado no tipo
-  const fileTypeMap = {
-    entities: "entity",
-    hooks: "hook",
-    repositories: "repository",
-    interfaces: "interface",
-    enums: "enum"
-  };
+export function resolveTemplatePath(type, config) {
+  const extension = config.language === "typescript" ? "ts" : "js";
 
-  // Para tipos customizados, usa o nome do tipo menos o 's' final (se houver)
-  // ou mantém o nome do tipo se não terminar com 's'
-  const fileType = fileTypeMap[dirKey] || (dirKey.endsWith('s') ? dirKey.slice(0, -1) : dirKey);
-  const extension = language === "typescript" ? "ts" : "js";
+  // Pega configuração do template
+  const templateConfig = config.templates?.[type];
+  let templateName = templateConfig?.template || type;
+
+  // Nome do arquivo: entity.ts.template ou entity.js.template
+  const templateFileName = `${templateName}.${extension}.template`;
 
   // caminho customizado no projeto do usuário
-  const userPath = path.join(process.cwd(), "generator", "templates", dirKey, `{feature}.${fileType}.${extension}`);
+  const userPath = path.join(process.cwd(), ".genpaths", "templates", templateFileName);
   if (fs.existsSync(userPath)) {
     return userPath;
   }
 
-  // fallback para default do pacote
-  const packagePath = path.join(__dirname, "templates", dirKey, `{feature}.${fileType}.${extension}`);
+  // fallback para default do pacote npm
+  const packagePath = path.join(__dirname, "..", ".genpaths", "templates", templateFileName);
   if (fs.existsSync(packagePath)) {
     return packagePath;
   }
 
   // Se não encontrou, lança erro informativo
   throw new Error(
-    `Template não encontrado para o tipo "${dirKey}".\n` +
-    `Esperado em: generator/templates/${dirKey}/{feature}.${fileType}.${extension}\n` +
-    `Ou em: src/templates/${dirKey}/{feature}.${fileType}.${extension}\n\n` +
+    `Template não encontrado para o tipo "${type}".\n` +
+    `Esperado em: .genpaths/templates/${templateFileName}\n\n` +
     `Para criar um tipo customizado:\n` +
-    `1. Crie a pasta: generator/templates/${dirKey}/\n` +
-    `2. Adicione o template: {feature}.${fileType}.${extension}\n` +
-    `3. Adicione o index: index.${extension}\n` +
-    `4. Use {{feature}} como placeholder no template`
+    `1. Crie o arquivo: .genpaths/templates/${templateName}.{ts,js}.template\n` +
+    `2. Use {{FEATURE_NAME}} como placeholder no template\n` +
+    `3. Use {{FEATURE_NAME_LOWER}} para versão minúscula`
   );
-}
-
-export function loadTemplate(dirKey, featureName, language = "typescript") {
-  const templatePath = resolveTemplatePath(dirKey, language);
+}export function loadTemplate(type, featureName, config) {
+  const templatePath = resolveTemplatePath(type, config);
   let content = fs.readFileSync(templatePath, "utf-8");
 
   // Capitaliza a primeira letra para nomes de classes/interfaces
   const capitalizedFeature = featureName.charAt(0).toUpperCase() + featureName.slice(1);
+  const lowerFeature = featureName.toLowerCase();
 
-  return content.replace(/\{\{feature\}\}/g, capitalizedFeature);
+  return content
+    .replace(/\{\{FEATURE_NAME\}\}/g, capitalizedFeature)
+    .replace(/\{\{FEATURE_NAME_LOWER\}\}/g, lowerFeature);
 }
 
-export function resolveIndexTemplatePath(dirKey, language = "typescript") {
-  const extension = language === "typescript" ? "ts" : "js";
+export function createIndexFile(folderPath, featureName, suffix, extension) {
+  const indexPath = path.join(folderPath, `index${extension}`);
+  const exportLine = `export * from './${featureName}${suffix}';\n`;
 
-  // caminho customizado no projeto do usuário
-  const userPath = path.join(process.cwd(), "generator", "templates", dirKey, `index.${extension}`);
-  if (fs.existsSync(userPath)) {
-    return userPath;
+  // Se já existe, adiciona a linha (se não existir já)
+  if (fs.existsSync(indexPath)) {
+    const currentContent = fs.readFileSync(indexPath, 'utf-8');
+    if (!currentContent.includes(exportLine.trim())) {
+      fs.appendFileSync(indexPath, exportLine);
+      console.log(`📝 Atualizado: ${indexPath}`);
+    }
+  } else {
+    // Cria novo
+    fs.writeFileSync(indexPath, exportLine);
+    console.log(`📄 Criado: ${indexPath}`);
   }
-
-  // fallback para default do pacote
-  const packagePath = path.join(__dirname, "templates", dirKey, `index.${extension}`);
-  if (fs.existsSync(packagePath)) {
-    return packagePath;
-  }
-
-  // Se não encontrou, lança erro informativo
-  throw new Error(
-    `Template index não encontrado para o tipo "${dirKey}".\n` +
-    `Esperado em: generator/templates/${dirKey}/index.${extension}\n` +
-    `Ou em: src/templates/${dirKey}/index.${extension}\n\n` +
-    `Para criar um tipo customizado:\n` +
-    `1. Crie a pasta: generator/templates/${dirKey}/\n` +
-    `2. Adicione o index: index.${extension}\n` +
-    `3. Use {{feature}} como placeholder no template`
-  );
 }
 
-export function loadIndexTemplate(dirKey, featureName, language = "typescript") {
-  const templatePath = resolveIndexTemplatePath(dirKey, language);
-  let content = fs.readFileSync(templatePath, "utf-8");
-
-  // Capitaliza a primeira letra para nomes de classes/interfaces
-  const capitalizedFeature = featureName.charAt(0).toUpperCase() + featureName.slice(1);
-
-  return content.replace(/\{\{feature\}\}/g, capitalizedFeature);
+function capitalizedType(type) {
+  // use-cases -> UseCases
+  // entities -> Entities
+  return type
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('');
 }
 
 export function copyDefaults(language = "typescript") {
   const extension = language === "typescript" ? "ts" : "js";
-  const src = path.join(__dirname, "templates");
-  const dest = path.join(process.cwd(), "generator", "templates");
+  const src = path.join(__dirname, "..", ".genpaths", "templates");
+  const dest = path.join(process.cwd(), ".genpaths", "templates");
 
   ensureDirExists(dest);
 
-  // Copia apenas os arquivos da linguagem selecionada
-  const dirs = ["entities", "hooks", "repositories", "interfaces", "enums"];
+  // Copia apenas os templates da linguagem selecionada
+  const templates = ["entity", "repository", "use-case"];
 
-  dirs.forEach(dir => {
-    const srcDir = path.join(src, dir);
-    const destDir = path.join(dest, dir);
-    ensureDirExists(destDir);
+  templates.forEach(template => {
+    const srcFile = path.join(src, `${template}.template.${extension}`);
+    const destFile = path.join(dest, `${template}.template.${extension}`);
 
-    const files = fs.readdirSync(srcDir).filter(file => file.endsWith(`.${extension}`));
-    files.forEach(file => {
-      const srcFile = path.join(srcDir, file);
-      const destFile = path.join(destDir, file);
+    if (fs.existsSync(srcFile)) {
       fs.copyFileSync(srcFile, destFile);
-    });
+    }
   });
 
-  console.log(`✨ Templates padrão (${language}) copiados para generator/templates`);
-  console.log(`📝 Use o formato {feature}.tipo.${extension} para seus templates customizados`);
-  console.log(`📝 Arquivos index.${extension} também foram copiados para cada tipo`);
+  console.log(`✨ Templates padrão (${language}) copiados para .genpaths/templates`);
+  console.log(`📝 Arquivos: entity.template.${extension}, repository.template.${extension}, use-case.template.${extension}`);
+  console.log(`📝 Use {{FEATURE_NAME}} e {{FEATURE_NAME_LOWER}} como placeholders`);
 }
 
 export function ensureDirExists(dirPath) {

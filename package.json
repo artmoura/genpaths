@@ -24,6 +24,7 @@
   "files": [
     "bin/",
     "src/",
+    ".genpaths/",
     "README.md",
     "CUSTOM_TYPES.md",
     ".genpaths.json.example",

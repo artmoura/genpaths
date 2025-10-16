@@ -1,60 +1,69 @@
 import path from "path";
-import { ensureDirExists, ensureFile, loadTemplate, loadIndexTemplate } from "./utils.js";
+import { ensureDirExists, ensureFile, loadTemplate, createIndexFile } from "./utils.js";
 
 export function createFeature(args, { only = [], except = [], config } = {}) {
   const featureName = args[args.length - 1];
 
-  // Construir o caminho base considerando baseDir
-  const pathParts = config.baseDir ? [config.baseDir, config.outputDir, ...args] : [config.outputDir, ...args];
+  // Nome em minúsculo para arquivos
+  const lowerFeatureName = featureName.toLowerCase();
+
+  // Construir o caminho base considerando baseDir e outputDir
+  const pathParts = [];
+  if (config.baseDir) pathParts.push(config.baseDir);
+  if (config.outputDir) pathParts.push(config.outputDir);
+
   const basePath = path.join(process.cwd(), ...pathParts);
 
-  const dirKeys = config.defaultTypes;
-  let dirsToCreate = [...dirKeys];
+  const types = config.defaultTypes;
+  let typesToCreate = [...types];
 
   // Validar tipos fornecidos
-  const allTypes = new Set(dirKeys);
+  const allTypes = new Set(types);
 
   if (only.length > 0) {
     const invalidTypes = only.filter(type => !allTypes.has(type));
     if (invalidTypes.length > 0) {
-      throw new Error(`Tipos inválidos em --only: ${invalidTypes.join(', ')}\nTipos válidos: ${dirKeys.join(', ')}`);
+      throw new Error(`Tipos inválidos em --types: ${invalidTypes.join(', ')}\nTipos válidos: ${types.join(', ')}`);
     }
-    dirsToCreate = only;
+    typesToCreate = only;
   } else if (except.length > 0) {
     const invalidTypes = except.filter(type => !allTypes.has(type));
     if (invalidTypes.length > 0) {
-      throw new Error(`Tipos inválidos em --except: ${invalidTypes.join(', ')}\nTipos válidos: ${dirKeys.join(', ')}`);
+      throw new Error(`Tipos inválidos em --except: ${invalidTypes.join(', ')}\nTipos válidos: ${types.join(', ')}`);
     }
-    dirsToCreate = dirsToCreate.filter((dir) => !except.includes(dir));
+    typesToCreate = typesToCreate.filter((type) => !except.includes(type));
   }
 
   ensureDirExists(basePath);
 
-  dirsToCreate.forEach((dirKey) => {
-    const fullPath = path.join(basePath, dirKey);
-    ensureDirExists(fullPath);
+  typesToCreate.forEach((type) => {
+    const templateConfig = config.templates?.[type];
 
-    // Define o nome correto do arquivo baseado no tipo
-    const fileTypeMap = {
-      entities: "entity",
-      hooks: "hook",
-      repositories: "repository",
-      interfaces: "interface",
-      enums: "enum"
-    };
+    // Se o tipo não está habilitado, pula
+    if (templateConfig && !templateConfig.enabled) {
+      return;
+    }
 
-    // Para tipos customizados, usa o nome do tipo menos o 's' final (se houver)
-    // ou mantém o nome do tipo se não terminar com 's'
-    const fileType = fileTypeMap[dirKey] || (dirKey.endsWith('s') ? dirKey.slice(0, -1) : dirKey);
-    const filePath = path.join(fullPath, `${featureName}.${fileType}${config.fileExtension}`);
-    const content = loadTemplate(dirKey, featureName, config.language);
+    // Pega a pasta do tipo (ex: "entities", "repositories")
+    const folder = templateConfig?.folder || type;
+    const folderPath = path.join(basePath, folder);
+    ensureDirExists(folderPath);
+
+    // Pega o suffix (ex: ".entity", ".repository")
+    const suffix = templateConfig?.suffix || '';
+    const extension = config.fileExtension;
+
+    // Nome do arquivo: user.entity.ts
+    const fileName = `${lowerFeatureName}${suffix}${extension}`;
+    const filePath = path.join(folderPath, fileName);
+    const content = loadTemplate(type, featureName, config);
 
     ensureFile(filePath, content);
 
-    // Criar arquivo index.{ts/js} para cada tipo
-    const indexPath = path.join(fullPath, `index${config.fileExtension}`);
-    const indexContent = loadIndexTemplate(dirKey, featureName, config.language);
-    ensureFile(indexPath, indexContent);
+    // Criar/atualizar index.ts na pasta do tipo
+    if (config.createIndex && config.indexExports?.includes(type)) {
+      createIndexFile(folderPath, lowerFeatureName, suffix, extension);
+    }
   });
 
   console.log(`✅ Feature "${featureName}" criada em: ${basePath}`);

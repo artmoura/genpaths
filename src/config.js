@@ -25,8 +25,30 @@ export class ProjectConfig {
       language: "typescript",
       locale: "pt-BR",
       baseDir: "src",
-      outputDir: "features",
-      defaultTypes: ["entities", "hooks", "repositories", "interfaces", "enums"]
+      outputDir: "",
+      defaultTypes: ["entities", "repositories", "use-cases"],
+      templates: {
+        entities: {
+          enabled: true,
+          folder: "entities",
+          suffix: ".entity",
+          template: "entity"
+        },
+        repositories: {
+          enabled: true,
+          folder: "repositories",
+          suffix: ".repository",
+          template: "repository"
+        },
+        "use-cases": {
+          enabled: true,
+          folder: "use-cases",
+          suffix: ".use-case",
+          template: "use-case"
+        }
+      },
+      createIndex: true,
+      indexExports: ["entities", "repositories", "use-cases"]
     };
   }
 
@@ -52,6 +74,18 @@ export class ProjectConfig {
 
   get defaultTypes() {
     return this.config.defaultTypes;
+  }
+
+  get templates() {
+    return this.config.templates || {};
+  }
+
+  get createIndex() {
+    return this.config.createIndex !== undefined ? this.config.createIndex : false;
+  }
+
+  get indexExports() {
+    return this.config.indexExports || [];
   }
 
   get fileExtension() {

@@ -1,0 +1,80 @@
+export class {{FEATURE_NAME}}Entity {
+  constructor(
+    id,
+    name,
+    isActive = true,
+    createdAt = new Date(),
+    updatedAt = new Date()
+  ) {
+    this.id = id;
+    this.name = name;
+    this.isActive = isActive;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+
+    this.validate();
+  }
+
+  // Getters
+  getId() {
+    return this.id;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  getIsActive() {
+    return this.isActive;
+  }
+
+  getCreatedAt() {
+    return this.createdAt;
+  }
+
+  getUpdatedAt() {
+    return this.updatedAt;
+  }
+
+  // Business methods
+  activate() {
+    this.isActive = true;
+    this.touch();
+  }
+
+  deactivate() {
+    this.isActive = false;
+    this.touch();
+  }
+
+  updateName(name) {
+    if (!name?.trim()) {
+      throw new Error('Name cannot be empty');
+    }
+    this.name = name;
+    this.touch();
+  }
+
+  touch() {
+    this.updatedAt = new Date();
+  }
+
+  validate() {
+    if (!this.id) {
+      throw new Error('ID is required');
+    }
+    if (!this.name?.trim()) {
+      throw new Error('Name is required');
+    }
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      isActive: this.isActive,
+      createdAt: this.createdAt.toISOString(),
+      updatedAt: this.updatedAt.toISOString()
+    };
+  }
+}

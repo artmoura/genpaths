@@ -1,0 +1,36 @@
+import { {{FEATURE_NAME}}Entity } from './{{FEATURE_NAME}}Entity';
+
+export interface I{{FEATURE_NAME}}Repository {
+  findById(id: string): Promise<{{FEATURE_NAME}}Entity | null>;
+  findAll(): Promise<{{FEATURE_NAME}}Entity[]>;
+  save(entity: {{FEATURE_NAME}}Entity): Promise<void>;
+  delete(id: string): Promise<void>;
+  exists(id: string): Promise<boolean>;
+}
+
+export class {{FEATURE_NAME}}Repository implements I{{FEATURE_NAME}}Repository {
+  private items: Map<string, {{FEATURE_NAME}}Entity> = new Map();
+
+  async findById(id: string): Promise<{{FEATURE_NAME}}Entity | null> {
+    return this.items.get(id) || null;
+  }
+
+  async findAll(): Promise<{{FEATURE_NAME}}Entity[]> {
+    return Array.from(this.items.values());
+  }
+
+  async save(entity: {{FEATURE_NAME}}Entity): Promise<void> {
+    this.items.set(entity.getId(), entity);
+  }
+
+  async delete(id: string): Promise<void> {
+    if (!await this.exists(id)) {
+      throw new Error('{{FEATURE_NAME}} not found');
+    }
+    this.items.delete(id);
+  }
+
+  async exists(id: string): Promise<boolean> {
+    return this.items.has(id);
+  }
+}

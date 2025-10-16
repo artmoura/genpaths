@@ -1,0 +1,74 @@
+export class {{FEATURE_NAME}}Entity {
+  constructor(
+    private readonly id: string,
+    private name: string,
+    private isActive: boolean = true,
+    private readonly createdAt: Date = new Date(),
+    private updatedAt: Date = new Date()
+  ) {
+    this.validate();
+  }
+
+  // Getters
+  getId(): string {
+    return this.id;
+  }
+
+  getName(): string {
+    return this.name;
+  }
+
+  getIsActive(): boolean {
+    return this.isActive;
+  }
+
+  getCreatedAt(): Date {
+    return this.createdAt;
+  }
+
+  getUpdatedAt(): Date {
+    return this.updatedAt;
+  }
+
+  // Business methods
+  activate(): void {
+    this.isActive = true;
+    this.touch();
+  }
+
+  deactivate(): void {
+    this.isActive = false;
+    this.touch();
+  }
+
+  updateName(name: string): void {
+    if (!name?.trim()) {
+      throw new Error('Name cannot be empty');
+    }
+    this.name = name;
+    this.touch();
+  }
+
+  private touch(): void {
+    this.updatedAt = new Date();
+  }
+
+  private validate(): void {
+    if (!this.id) {
+      throw new Error('ID is required');
+    }
+    if (!this.name?.trim()) {
+      throw new Error('Name is required');
+    }
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      isActive: this.isActive,
+      createdAt: this.createdAt.toISOString(),
+      updatedAt: this.updatedAt.toISOString()
+    };
+  }
+}

@@ -2,12 +2,36 @@
   "language": "typescript",
   "locale": "pt-BR",
   "baseDir": "src",
-  "outputDir": "features",
+  "outputDir": "",
   "defaultTypes": [
     "entities",
-    "hooks",
     "repositories",
-    "interfaces",
-    "enums"
+    "use-cases"
+  ],
+  "templates": {
+    "entities": {
+      "enabled": true,
+      "folder": "entities",
+      "suffix": ".entity",
+      "template": "entity"
+    },
+    "repositories": {
+      "enabled": true,
+      "folder": "repositories",
+      "suffix": ".repository",
+      "template": "repository"
+    },
+    "use-cases": {
+      "enabled": true,
+      "folder": "use-cases",
+      "suffix": ".use-case",
+      "template": "use-case"
+    }
+  },
+  "createIndex": true,
+  "indexExports": [
+    "entities",
+    "repositories",
+    "use-cases"
   ]
 }

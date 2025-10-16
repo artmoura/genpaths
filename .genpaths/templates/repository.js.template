@@ -1,0 +1,28 @@
+export class {{FEATURE_NAME}}Repository {
+  constructor() {
+    this.items = new Map();
+  }
+
+  async findById(id) {
+    return this.items.get(id) || null;
+  }
+
+  async findAll() {
+    return Array.from(this.items.values());
+  }
+
+  async save(entity) {
+    this.items.set(entity.getId(), entity);
+  }
+
+  async delete(id) {
+    if (!await this.exists(id)) {
+      throw new Error('{{FEATURE_NAME}} not found');
+    }
+    this.items.delete(id);
+  }
+
+  async exists(id) {
+    return this.items.has(id);
+  }
+}
