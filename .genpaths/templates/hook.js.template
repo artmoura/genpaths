@@ -1,0 +1,12 @@
+import { useState, useEffect } from 'react';
+
+/**
+ * use{{FEATURE_NAME}} Hook
+ */
+export const use{{FEATURE_NAME}} = () => {
+  // TODO: Add hook logic
+
+  return {
+    // TODO: Return values
+  };
+};

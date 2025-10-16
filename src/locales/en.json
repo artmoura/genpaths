@@ -22,12 +22,16 @@
     "interactive": "🤖 Use interactive mode? (recommended for first time)",
     "locale": "🌍 Choose language / Escolha o idioma:",
     "localePortuguese": "Português (pt-BR)",
-    "localeEnglish": "English (en)"
+    "localeEnglish": "English (en)",
+    "framework": "⚛️  Which framework are you using?",
+    "frameworkNone": "None (base only)",
+    "frameworkReact": "React (with components and hooks)"
   },
   "message": {
     "interactiveMode": "🤖 Interactive Mode",
     "configuringProject": "⚙️  Configuring project...",
     "configSaved": "✅ Configuration saved!",
+    "initProject": "🚀 Initializing genpaths project",
     "generating": "🏗️  Generating feature \"{0}\" in {1}...",
     "currentConfig": "📋 Current configuration:",
     "configLanguage": "Language:",

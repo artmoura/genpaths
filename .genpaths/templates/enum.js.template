@@ -1,0 +1,8 @@
+/**
+ * {{FEATURE_NAME}} Enum
+ */
+const {{FEATURE_NAME}} = {
+  // TODO: Add enum values
+};
+
+module.exports = {{FEATURE_NAME}};

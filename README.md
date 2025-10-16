@@ -31,7 +31,22 @@ npm install -g genpaths
 
 ## 🚀 Uso Rápido
 
-## 🚀 Uso Rápido
+### Inicializar projeto (Novo!)
+
+```bash
+npx genpaths init
+```
+
+Este comando irá:
+1. Perguntar qual idioma você prefere (pt-BR ou en)
+2. Perguntar qual linguagem usar (TypeScript ou JavaScript)
+3. Perguntar qual framework você está usando (Nenhum ou React)
+4. Copiar todos os templates relevantes para `.genpaths/templates/`
+5. Criar um arquivo `.genpaths.json` com configuração padrão
+
+**Templates incluídos:**
+- **Base** (sempre): entity, repository, use-case, enum
+- **React** (opcional): component, hook
 
 ### Gerar uma feature completa
 
@@ -42,23 +57,29 @@ npx genpaths create User
 Isso criará a seguinte estrutura:
 ```
 src/
-  features/
-    User/
-      entities/
-        User.entity.ts
-        index.ts
-      repositories/
-        User.repository.ts
-        index.ts
-      interfaces/
-        User.interface.ts
-        index.ts
-      hooks/
-        User.hook.ts
-        index.ts
-      enums/
-        User.enum.ts
-        index.ts
+  entities/
+    user.entity.ts
+    index.ts
+  repositories/
+    user.repository.ts
+    index.ts
+  use-cases/
+    user.use-case.ts
+    index.ts
+  enums/
+    user.enum.ts
+    index.ts
+```
+
+**Se você escolheu React no init, também criará:**
+```
+src/
+  components/
+    User.tsx
+    index.ts
+  hooks/
+    useUser.ts
+    index.ts
 ```
 
 ### Gerar apenas tipos específicos
@@ -108,15 +129,6 @@ npx genpaths Product --only entities,interfaces
 # Todos exceto enums
 npx genpaths Order --except enums
 ````
-
-### Especificar linguagem
-
-```bash
-npx genpaths create Auth --js
-
-# Forçar TypeScript
-npx genpaths create Auth --ts
-```
 
 ### Paths aninhados
 

@@ -1,0 +1,9 @@
+import React from 'react';
+
+export const {{FEATURE_NAME}} = (props) => {
+  return (
+    <div>
+      <h1>{{FEATURE_NAME}}</h1>
+    </div>
+  );
+};
