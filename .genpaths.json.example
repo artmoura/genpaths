@@ -4,34 +4,49 @@
   "baseDir": "src",
   "outputDir": "",
   "defaultTypes": [
-    "entities",
-    "repositories",
-    "use-cases"
+    "entity",
+    "repository",
+    "use-case",
+    "enum"
   ],
   "templates": {
-    "entities": {
+    "entity": {
       "enabled": true,
       "folder": "entities",
       "suffix": ".entity",
       "template": "entity"
     },
-    "repositories": {
+    "repository": {
       "enabled": true,
       "folder": "repositories",
       "suffix": ".repository",
       "template": "repository"
     },
-    "use-cases": {
+    "use-case": {
       "enabled": true,
       "folder": "use-cases",
       "suffix": ".use-case",
       "template": "use-case"
+    },
+    "enum": {
+      "enabled": true,
+      "folder": "enums",
+      "suffix": ".enum",
+      "template": "enum"
+    },
+    "component": {
+      "enabled": false,
+      "folder": "components",
+      "suffix": "",
+      "template": "component"
+    },
+    "hook": {
+      "enabled": false,
+      "folder": "hooks",
+      "suffix": "",
+      "template": "hook"
     }
   },
   "createIndex": true,
-  "indexExports": [
-    "entities",
-    "repositories",
-    "use-cases"
-  ]
+  "indexExports": true
 }

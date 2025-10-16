@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import chalk from "chalk";
 import { createFeature } from "../src/feature.js";
-import { copyDefaults } from "../src/utils.js";
+import { copyDefaults, initProject } from "../src/utils.js";
 import { ProjectConfig } from "../src/config.js";
 import { t, setLocale } from "../src/i18n.js";
 import {
@@ -13,7 +13,8 @@ import {
   promptForNestedPath,
   promptForConfigSave,
   promptForInteractiveMode,
-  promptForLocale
+  promptForLocale,
+  promptForFramework
 } from "../src/prompts.js";
 
 const args = process.argv.slice(2);
@@ -47,11 +48,11 @@ async function runInteractiveMode(config) {
   console.log(chalk.blue('\n' + t('message.interactiveMode') + '\n'));
 
   // Se não há configuração, configura o projeto
-  if (!config.configPath || args.includes('init')) {
+  if (!config.configPath) {
     console.log(chalk.yellow(t('message.configuringProject')));
 
-    // Perguntar idioma primeiro se for init ou não houver configuração
-    if (!config.config.locale || args.includes('init')) {
+    // Perguntar idioma primeiro se não houver configuração
+    if (!config.config.locale) {
       const locale = await promptForLocale();
       setLocale(locale);
       config.updateConfig({ locale });
@@ -176,6 +177,20 @@ async function main() {
       return;
     }
 
+    if (command === "init") {
+      console.log(chalk.blue('\n' + t('message.initProject') + '\n'));
+
+      // Perguntar idioma primeiro
+      const locale = await promptForLocale();
+      setLocale(locale);
+
+      const language = await promptForLanguage();
+      const framework = await promptForFramework();
+
+      initProject(language, framework);
+      return;
+    }
+
     if (command === "config") {
       console.log(chalk.blue('\n' + t('message.currentConfig')));
       console.log(chalk.gray(t('message.configLanguage')), chalk.green(config.language));
@@ -187,12 +202,10 @@ async function main() {
       return;
     }
 
-    // Comando 'create' ou 'init' com modo interativo
-    if (command === "init" || (command === "create" && (args.includes('--interactive') || args.includes('-i')))) {
+    // Comando 'create' ou modo interativo (não mais 'init')
+    if (command === "create" && (args.includes('--interactive') || args.includes('-i'))) {
       // Remove 'create' dos args se existir para processar corretamente
-      if (command === "create") {
-        args.shift();
-      }
+      args.shift();
       const { featureArgs, options } = await runInteractiveMode(config);
 
       // Validar nome

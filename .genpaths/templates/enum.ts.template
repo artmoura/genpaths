@@ -1,0 +1,6 @@
+/**
+ * {{FEATURE_NAME}} Enum
+ */
+export enum {{FEATURE_NAME}} {
+  // TODO: Add enum values
+}

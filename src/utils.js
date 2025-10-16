@@ -76,6 +76,122 @@ function capitalizedType(type) {
     .join('');
 }
 
+export function initProject(language = "typescript", framework = "none") {
+  const extension = language === "typescript" ? "ts" : "js";
+  const src = path.join(__dirname, "..", ".genpaths", "templates");
+  const dest = path.join(process.cwd(), ".genpaths", "templates");
+  const configDest = path.join(process.cwd(), ".genpaths.json");
+
+  ensureDirExists(dest);
+
+  // Templates base (sempre incluídos)
+  const baseTemplates = ["entity", "repository", "use-case"];
+
+  // Templates framework-específicos
+  const frameworkTemplates = {
+    react: ["component", "hook"],
+    none: []
+  };
+
+  // Templates adicionais comuns
+  const commonTemplates = ["enum"];
+
+  const allTemplates = [
+    ...baseTemplates,
+    ...commonTemplates,
+    ...(frameworkTemplates[framework] || [])
+  ];
+
+  let copiedCount = 0;
+
+  allTemplates.forEach(template => {
+    // Para components, precisa usar tsx/jsx
+    let ext = extension;
+    if (template === "component" && language === "typescript") {
+      ext = "tsx";
+    } else if (template === "component" && language === "javascript") {
+      ext = "jsx";
+    }
+
+    const srcFile = path.join(src, `${template}.${ext}.template`);
+    const destFile = path.join(dest, `${template}.${ext}.template`);
+
+    if (fs.existsSync(srcFile)) {
+      fs.copyFileSync(srcFile, destFile);
+      copiedCount++;
+    }
+  });
+
+  // Cria .genpaths.json se não existir
+  if (!fs.existsSync(configDest)) {
+    const defaultConfig = {
+      baseDir: "src",
+      outputDir: "",
+      language: language,
+      createIndex: true,
+      indexExports: true,
+      templates: {
+        entity: {
+          enabled: true,
+          folder: "entities",
+          suffix: ".entity",
+          template: "entity"
+        },
+        repository: {
+          enabled: true,
+          folder: "repositories",
+          suffix: ".repository",
+          template: "repository"
+        },
+        "use-case": {
+          enabled: true,
+          folder: "use-cases",
+          suffix: ".use-case",
+          template: "use-case"
+        },
+        enum: {
+          enabled: true,
+          folder: "enums",
+          suffix: ".enum",
+          template: "enum"
+        }
+      }
+    };
+
+    // Adiciona templates do React se selecionado
+    if (framework === "react") {
+      defaultConfig.templates.component = {
+        enabled: true,
+        folder: "components",
+        suffix: "",
+        template: "component"
+      };
+      defaultConfig.templates.hook = {
+        enabled: true,
+        folder: "hooks",
+        suffix: "",
+        template: "hook"
+      };
+    }
+
+    fs.writeFileSync(configDest, JSON.stringify(defaultConfig, null, 2), "utf-8");
+    console.log(`\n✅ Arquivo de configuração criado: .genpaths.json`);
+  } else {
+    console.log(`\n⚠️  .genpaths.json já existe (não foi sobrescrito)`);
+  }
+
+  console.log(`\n✨ ${copiedCount} templates copiados para .genpaths/templates/`);
+  console.log(`\n📝 Templates disponíveis:`);
+  allTemplates.forEach(t => {
+    let ext = extension;
+    if (t === "component") ext = language === "typescript" ? "tsx" : "jsx";
+    console.log(`   - ${t}.${ext}.template`);
+  });
+  console.log(`\n🚀 Pronto! Agora você pode usar:`);
+  console.log(`   genpaths create NomeDaFeature`);
+  console.log(`\n💡 Dica: Edite os templates em .genpaths/templates/ para personalizar`);
+}
+
 export function copyDefaults(language = "typescript") {
   const extension = language === "typescript" ? "ts" : "js";
   const src = path.join(__dirname, "..", ".genpaths", "templates");
