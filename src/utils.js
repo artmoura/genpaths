@@ -88,7 +88,7 @@ export function initProject(language = "typescript") {
   const baseTemplates = ["entity", "repository", "use-case"];
 
   // Templates adicionais comuns
-  const commonTemplates = ["enum"];
+  const commonTemplates = ["enum", "component", "hook"];
 
   const allTemplates = [
     ...baseTemplates,
@@ -117,7 +117,7 @@ export function initProject(language = "typescript") {
 
   // Cria .genpaths.json se não existir
   if (!fs.existsSync(configDest)) {
-    const defaultTypes = ["entity", "repository", "use-case", "enum", "component", "hook"];
+    const defaultTypes = ["entity", "repository", "use-case", "enum"];
 
     const defaultConfig = {
       baseDir: "src",
@@ -151,17 +151,17 @@ export function initProject(language = "typescript") {
           suffix: ".enum",
           template: "enum"
         },
-        hook: {
-          enabled: true,
-          folder: "hooks",
-          suffix: "",
-          template: "hook"
-        },
         component: {
-          enabled: true,
+          enabled: false,
           folder: "components",
           suffix: "",
           template: "component"
+        },
+        hook: {
+          enabled: false,
+          folder: "hooks",
+          suffix: "",
+          template: "hook"
         }
       }
     };

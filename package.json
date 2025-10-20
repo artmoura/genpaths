@@ -1,6 +1,6 @@
 {
   "name": "genpaths",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Gerador automático de paths e estruturas de arquivos para projetos com suporte a tipos customizados",
   "main": "bin/index.js",
   "bin": {
