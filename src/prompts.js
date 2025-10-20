@@ -34,22 +34,6 @@ export async function promptForLanguage() {
   return language;
 }
 
-export async function promptForFramework() {
-  const { framework } = await inquirer.prompt([
-    {
-      type: "list",
-      name: "framework",
-      message: chalk.cyan(t('prompt.framework')),
-      choices: [
-        { name: t('prompt.frameworkNone'), value: "none" },
-        { name: t('prompt.frameworkReact'), value: "react" }
-      ],
-      default: "none"
-    }
-  ]);
-  return framework;
-}
-
 export async function promptForOutputDir(currentDir = "features") {
   const { outputDir } = await inquirer.prompt([
     {

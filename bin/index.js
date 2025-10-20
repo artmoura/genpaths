@@ -11,10 +11,7 @@ import {
   promptForTypes,
   promptForFeatureName,
   promptForNestedPath,
-  promptForConfigSave,
-  promptForInteractiveMode,
   promptForLocale,
-  promptForFramework
 } from "../src/prompts.js";
 
 const args = process.argv.slice(2);
@@ -185,9 +182,8 @@ async function main() {
       setLocale(locale);
 
       const language = await promptForLanguage();
-      const framework = await promptForFramework();
 
-      initProject(language, framework);
+      initProject(language);
       return;
     }
 

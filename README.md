@@ -40,7 +40,6 @@ npx genpaths init
 Este comando irá:
 1. Perguntar qual idioma você prefere (pt-BR ou en)
 2. Perguntar qual linguagem usar (TypeScript ou JavaScript)
-3. Perguntar qual framework você está usando (Nenhum ou React)
 4. Copiar todos os templates relevantes para `.genpaths/templates/`
 5. Criar um arquivo `.genpaths.json` com configuração padrão
 
