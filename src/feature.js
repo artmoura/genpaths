@@ -61,8 +61,13 @@ export function createFeature(args, { only = [], except = [], config } = {}) {
     ensureFile(filePath, content);
 
     // Criar/atualizar index.ts na pasta do tipo
-    if (config.createIndex && config.indexExports?.includes(type)) {
-      createIndexFile(folderPath, lowerFeatureName, suffix, extension);
+    if (config.createIndex) {
+      const shouldCreateIndex = config.indexExports === true ||
+                               (Array.isArray(config.indexExports) && config.indexExports.includes(type));
+
+      if (shouldCreateIndex) {
+        createIndexFile(folderPath, lowerFeatureName, suffix, extension);
+      }
     }
   });
 
