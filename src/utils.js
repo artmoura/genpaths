@@ -12,8 +12,12 @@ export function resolveTemplatePath(type, config) {
   const templateConfig = config.templates?.[type];
   let templateName = templateConfig?.template || type;
 
-  // Nome do arquivo: entity.ts.template ou entity.js.template
-  const templateFileName = `${templateName}.${extension}.template`;
+  // Usar extensão configurada no template, se especificada
+  // Caso contrário, usa a extensão padrão da linguagem
+  let actualExtension = templateConfig?.extension || extension;
+
+  // Nome do arquivo: entity.ts.template ou component.tsx.template
+  const templateFileName = `${templateName}.${actualExtension}.template`;
 
   // caminho customizado no projeto do usuário
   const userPath = path.join(process.cwd(), ".genpaths", "templates", templateFileName);
@@ -32,7 +36,7 @@ export function resolveTemplatePath(type, config) {
     `Template não encontrado para o tipo "${type}".\n` +
     `Esperado em: .genpaths/templates/${templateFileName}\n\n` +
     `Para criar um tipo customizado:\n` +
-    `1. Crie o arquivo: .genpaths/templates/${templateName}.{ts,js}.template\n` +
+    `1. Crie o arquivo: .genpaths/templates/${templateName}.{ts,js,tsx,jsx}.template\n` +
     `2. Use {{FEATURE_NAME}} como placeholder no template\n` +
     `3. Use {{FEATURE_NAME_LOWER}} para versão minúscula`
   );
@@ -155,7 +159,8 @@ export function initProject(language = "typescript") {
           enabled: false,
           folder: "components",
           suffix: "",
-          template: "component"
+          template: "component",
+          extension: language === "typescript" ? "tsx" : "jsx"
         },
         hook: {
           enabled: false,

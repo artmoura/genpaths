@@ -5,6 +5,56 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [3.2.0] - 2025-10-20
+
+### ✨ Adicionado
+
+- **Extensões de arquivo configuráveis**: Nova propriedade `extension` na configuração de cada template permite definir extensões customizadas (`.ts`, `.js`, `.tsx`, `.jsx`, etc.)
+- Suporte total para qualquer tipo usar qualquer extensão via configuração
+- Templates agora podem especificar sua própria extensão independente da linguagem do projeto
+
+### 🔧 Melhorado
+
+- **Flexibilidade total**: Qualquer tipo pode usar `.tsx`/`.jsx` ou qualquer outra extensão, não apenas components
+- **Fallback inteligente**: Se não especificar `extension`, usa o padrão da linguagem (`ts` ou `js`)
+- Sistema de resolução de templates mais robusto e extensível
+- Documentação de erro atualizada para incluir extensões `.tsx` e `.jsx`
+
+### 📝 Exemplo de Configuração
+
+```json
+{
+  "component": {
+    "enabled": true,
+    "folder": "components",
+    "suffix": "",
+    "template": "component",
+    "extension": "tsx"  // Usa .tsx ao invés do padrão
+  },
+  "view": {
+    "enabled": true,
+    "folder": "views",
+    "suffix": ".view",
+    "template": "view",
+    "extension": "tsx"  // Qualquer tipo pode usar tsx!
+  }
+}
+```
+
+## [3.1.2] - 2025-10-20
+
+### 🐛 Corrigido
+
+- **Suporte a arquivos .tsx/.jsx**: Component templates agora são corretamente resolvidos com extensões `.tsx` (TypeScript) e `.jsx` (JavaScript)
+- **Paths aninhados**: Corrigido suporte para criar features em subpastas (ex: `genpaths create Main/User` agora cria `src/entities/main/user.entity.ts`)
+- **Criação de diretórios intermediários**: Diretórios aninhados são criados automaticamente quando necessário
+- **Index files em paths aninhados**: Arquivos index.ts agora exportam corretamente features em subpastas
+
+### 🔧 Melhorado
+
+- Sistema de resolução de templates mais robusto para diferentes extensões de arquivo
+- Melhor tratamento de paths com barra (/) para features organizadas em módulos
+
 ## [3.1.1] - 2025-10-20
 
 ### 🐛 Corrigido

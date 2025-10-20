@@ -44,8 +44,7 @@ Este comando irá:
 5. Criar um arquivo `.genpaths.json` com configuração padrão
 
 **Templates incluídos:**
-- **Base** (sempre): entity, repository, use-case, enum
-- **React** (opcional): component, hook
+- **Base** (default): entity, repository, use-case, enum, component, hook
 
 ### Gerar uma feature completa
 
@@ -68,11 +67,6 @@ src/
   enums/
     user.enum.ts
     index.ts
-```
-
-**Se você escolheu React no init, também criará:**
-```
-src/
   components/
     User.tsx
     index.ts
@@ -356,7 +350,7 @@ import { Userentity } from './features/User/entities';
 | `entities`       | Classes de entityo/entidade | `Feature.entity.js/ts`      |
 | `repositories` | Camada de acesso a dados   | `Feature.repository.js/ts` |
 | `interfaces`   | Interfaces TypeScript      | `Feature.interface.ts`     |
-| `hooks`        | Custom hooks (React/Vue)   | `Feature.hook.js/ts`       |
+| `hooks`        | Custom hooks               | `Feature.hook.js/ts`       |
 | `enums`        | Enumerações                | `Feature.enum.js/ts`       |
 
 ## 🎨 Templates Personalizados

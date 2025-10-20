@@ -38,7 +38,8 @@
       "enabled": false,
       "folder": "components",
       "suffix": "",
-      "template": "component"
+      "template": "component",
+      "extension": "tsx"
     },
     "hook": {
       "enabled": false,
