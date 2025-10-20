@@ -22,10 +22,7 @@
     "interactive": "🤖 Use interactive mode? (recommended for first time)",
     "locale": "🌍 Choose language / Escolha o idioma:",
     "localePortuguese": "Português (pt-BR)",
-    "localeEnglish": "English (en)",
-    "framework": "⚛️  Which framework are you using?",
-    "frameworkNone": "None (base only)",
-    "frameworkReact": "React (with components and hooks)"
+    "localeEnglish": "English (en)"
   },
   "message": {
     "interactiveMode": "🤖 Interactive Mode",

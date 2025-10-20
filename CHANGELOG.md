@@ -5,6 +5,24 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [3.1.0] - 2025-10-20
+
+### ✨ Adicionado
+
+- **Todos os templates incluídos por padrão**: Comando `genpaths init` agora copia todos os templates (entity, repository, use-case, enum, component, hook) independente do framework
+- Templates React (component e hook) vêm desabilitados por padrão no `.genpaths.json`
+- Campo `defaultTypes` agora é gerado corretamente no arquivo de configuração
+
+### 🔧 Melhorado
+
+- **Simplificação do init**: Removida a pergunta sobre framework - usuário apenas habilita/desabilita os tipos que deseja no `.genpaths.json`
+- **Melhor flexibilidade**: Todos os templates disponíveis para customização, usuário decide quais usar via configuração
+- **UX aprimorada**: Menos perguntas no init, processo mais direto e rápido
+
+### 🌍 Traduções
+
+- Removidas traduções relacionadas à seleção de framework (prompt.framework*)
+
 ## [3.0.0] - 2025-10-16
 
 ### 🚀 BREAKING CHANGES
@@ -19,11 +37,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - **Comando `genpaths init`**: Inicializa projeto interativamente com templates e configuração
 - **Suporte a React**: Templates para components (`.tsx`/`.jsx`) e hooks
 - **Template de Enum**: Novo template para enumerações
-- **Seleção de Framework**: Escolha entre "Nenhum" ou "React" durante o init
 - **Auto-geração de index.ts**: Cria e atualiza automaticamente arquivos index.ts em cada pasta de tipo
 - **Configuração avançada de templates**: Cada tipo pode ter folder, suffix e template customizados
 - Função `initProject()` que configura projeto completo automaticamente
-- Função `promptForFramework()` para seleção de framework
 
 ### 🔧 Melhorado
 

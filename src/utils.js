@@ -36,7 +36,7 @@ export function resolveTemplatePath(type, config) {
     `2. Use {{FEATURE_NAME}} como placeholder no template\n` +
     `3. Use {{FEATURE_NAME_LOWER}} para versão minúscula`
   );
-}export function loadTemplate(type, featureName, config) {
+} export function loadTemplate(type, featureName, config) {
   const templatePath = resolveTemplatePath(type, config);
   let content = fs.readFileSync(templatePath, "utf-8");
 
@@ -76,7 +76,7 @@ function capitalizedType(type) {
     .join('');
 }
 
-export function initProject(language = "typescript", framework = "none") {
+export function initProject(language = "typescript") {
   const extension = language === "typescript" ? "ts" : "js";
   const src = path.join(__dirname, "..", ".genpaths", "templates");
   const dest = path.join(process.cwd(), ".genpaths", "templates");
@@ -87,19 +87,12 @@ export function initProject(language = "typescript", framework = "none") {
   // Templates base (sempre incluídos)
   const baseTemplates = ["entity", "repository", "use-case"];
 
-  // Templates framework-específicos
-  const frameworkTemplates = {
-    react: ["component", "hook"],
-    none: []
-  };
-
   // Templates adicionais comuns
   const commonTemplates = ["enum"];
 
   const allTemplates = [
     ...baseTemplates,
     ...commonTemplates,
-    ...(frameworkTemplates[framework] || [])
   ];
 
   let copiedCount = 0;
@@ -124,10 +117,13 @@ export function initProject(language = "typescript", framework = "none") {
 
   // Cria .genpaths.json se não existir
   if (!fs.existsSync(configDest)) {
+    const defaultTypes = ["entity", "repository", "use-case", "enum", "component", "hook"];
+
     const defaultConfig = {
       baseDir: "src",
       outputDir: "",
       language: language,
+      defaultTypes: defaultTypes,
       createIndex: true,
       indexExports: true,
       templates: {
@@ -154,25 +150,21 @@ export function initProject(language = "typescript", framework = "none") {
           folder: "enums",
           suffix: ".enum",
           template: "enum"
+        },
+        hook: {
+          enabled: true,
+          folder: "hooks",
+          suffix: "",
+          template: "hook"
+        },
+        component: {
+          enabled: true,
+          folder: "components",
+          suffix: "",
+          template: "component"
         }
       }
     };
-
-    // Adiciona templates do React se selecionado
-    if (framework === "react") {
-      defaultConfig.templates.component = {
-        enabled: true,
-        folder: "components",
-        suffix: "",
-        template: "component"
-      };
-      defaultConfig.templates.hook = {
-        enabled: true,
-        folder: "hooks",
-        suffix: "",
-        template: "hook"
-      };
-    }
 
     fs.writeFileSync(configDest, JSON.stringify(defaultConfig, null, 2), "utf-8");
     console.log(`\n✅ Arquivo de configuração criado: .genpaths.json`);
